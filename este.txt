@@ -1,4 +1,3 @@
-
 IF(id>20_i){
 	id=25_i;
 	FOR(inic=10_i; inic>final; UP 15_i){
