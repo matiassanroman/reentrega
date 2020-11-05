@@ -38,22 +38,13 @@ sentenciaDeclarativa : tipo listaVariables ';'
 					 | declaracionProcedimiento
 {
 }	
-					 | error listaVariables ';'
-{
-	yyerror("Error, tipo invalido en linea nro: "+compilador.Compilador.nroLinea);
-}
 					 ;
 
 listaVariables : listaVariables ',' identificador
 {
-	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 			   | identificador
 {
-}
-			   | error
-{
-	yyerror("Error en la o las varibles, en linea nro: " + compilador.Compilador.nroLinea);
 }
 			   ;
 
@@ -83,10 +74,6 @@ encabezadoProc : PROC identificador '(' parametrosProc ')' NA '=' CTE ',' NS '='
 	mostrarMensaje("Palabra reservada " + $9.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
-			   | PROC identificador '(' error ')' NA '=' CTE ',' NS '=' CTE
-{
-	yyerror("Error en los parametros de procedimiento en linea nro: " + compilador.Compilador.nroLinea);
-}
 			   ; 
 
 parametrosProc : parametro
@@ -104,19 +91,11 @@ parametro : tipo identificador
 {
 	mostrarMensaje("Parametro, en linea nro: " + compilador.Compilador.nroLinea);
 }
-		  | error identificador
-{
-	yyerror("Error, tipo invalido en el parametro, en linea nro: "+ compilador.Compilador.nroLinea);
-}
 		  ;
 
 bloqueProc : '{' bloque '}'
 {
 	mostrarMensaje("Bloque de procedimiento en linea nro: " + compilador.Compilador.nroLinea);
-}
-		   | '{' error '}'
-{
-	yyerror("Error en el cuerpo del procedimiento en linea nro: " + compilador.Compilador.nroLinea);
 }
 		   ;
 
@@ -141,7 +120,16 @@ sentenciaEjecutable : asignacion
 {
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token CADENA, lexema: " + $3.sval + ", en linea " + compilador.Compilador.nroLinea);
+	System.out.println("Salida por pantalla: " + $3.sval);
 }                        
+					| OUT '(' error ')' ';'
+{
+	yyerror("Error: Formato de cadena incorrecto, en linea nro: "+ compilador.Compilador.nroLinea);
+}
+					| error '(' CADENA ')' ';'
+{
+	yyerror("Error: Palabra reservada mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);
+}
 					| identificador '(' parametrosProc ')' ';'
 {
 	mostrarMensaje("Llamada a procedimiento con parametros en linea nro: " + compilador.Compilador.nroLinea);
@@ -158,27 +146,11 @@ sentenciaEjecutable : asignacion
 {
 	mostrarMensaje("Ciclo FOR en linea nro: " + compilador.Compilador.nroLinea);
 }
-					| OUT '(' error ')' ';'
-{
-	yyerror("Error en la cadena en linea nro: " + compilador.Compilador.nroLinea);
-}
-					| IF error
-{
-	yyerror("Error en el cuerpo del IF en linea nro: " + compilador.Compilador.nroLinea);
-}
 					;
 
 cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia '}'
 {
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
-}
-		 | FOR '(' error ')' '{' bloqueSentencia '}'
-{
-	yyerror("Error en la condicion del FOR en linea nro: " + compilador.Compilador.nroLinea);
-}
-		 | FOR '(' condicionFor ')' '{' error '}'
-{
-	yyerror("Error en el cuerpo del FOR en linea nro: " + compilador.Compilador.nroLinea);
 }
          ;
 
@@ -218,6 +190,10 @@ incDec : UP constante
 {
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
+	   | error constante
+{
+	yyerror("Error: incremento/decremento mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
+}
 	   ;
 
 bloqueSentencia : bloqueSentencia sentenciaEjecutable
@@ -242,7 +218,22 @@ cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'
 {
 	mostrarMensaje("IF con ELSE, en linea nro: " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + $7.sval + ", en linea " + compilador.Compilador.nroLinea);
-}			   	  
+}			 
+			   | '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}' 
+{
+	mostrarMensaje("IF con ELSE, con sentencia unica en rama verdadera, en linea nro: " + compilador.Compilador.nroLinea);
+	mostrarMensaje("Palabra reservada " + $5.sval + ", en linea " + compilador.Compilador.nroLinea);
+}
+			   | '(' condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable
+{
+	mostrarMensaje("IF con ELSE, con sentencia unica en rama falsa, en linea nro: " + compilador.Compilador.nroLinea);
+	mostrarMensaje("Palabra reservada " + $7.sval + ", en linea " + compilador.Compilador.nroLinea);
+}
+			   | '(' condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable
+{
+	mostrarMensaje("IF con ELSE, con sentencia unica en ambas ramas, en linea nro: " + compilador.Compilador.nroLinea);
+	mostrarMensaje("Palabra reservada " + $5.sval + ", en linea " + compilador.Compilador.nroLinea);
+}
 			   ;  
 
 condicionIf : condicion
@@ -263,12 +254,20 @@ bloqueElse : bloqueSentencia
 cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen '}'
 {
 	mostrarMensaje("IF sin ELSE, en linea nro: " + compilador.Compilador.nroLinea);
-} 
+}
+				 | '(' condicionIf ')' sentenciaEjecutable
+{
+	mostrarMensaje("IF sin ELSE, con sentencia unica, en linea nro: " + compilador.Compilador.nroLinea);
+}
 				 ;
 
 asignacion : identificador '=' expresion ';'
 {
 	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
+}
+		   | error '=' expresion ';'
+{
+	yyerror("Error: identificador mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 		   ;
 
@@ -293,7 +292,9 @@ termino : termino '*' factor
 {
 	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
-		| factor          
+		| factor
+{
+}
 		;
 
 factor : constante
@@ -328,6 +329,10 @@ comparador : '<='
 {
 	mostrarMensaje("Token " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
+		   | error
+{
+	yyerror("Error: comparador no permitido, en linea nro: "+ compilador.Compilador.nroLinea);
+}
 		   ;
 
 tipo : FLOAT 
@@ -338,33 +343,56 @@ tipo : FLOAT
 {
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
+	 | error
+{
+	yyerror("Error: tipo mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
+}
      ;
 
 identificador : ID
 {
 	mostrarMensaje("Token ID, lexema: " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
+
 			  ;
 			  
-constante : CTE 
+constante : ctePositiva
+{
+}
+		  | cteNegativa
+{
+}
+		  ;
+
+ctePositiva : CTE 
 {
 	mostrarMensaje("Token: CTE, lexema: "+ $1.ival + ", en linea " + compilador.Compilador.nroLinea);
 }
-		  | '-' CTE 
+			| error 
+{
+	yyerror("Error: constante positiva mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);
+}
+			;
+
+cteNegativa : '-' CTE 
 {
 	mostrarMensaje("Token: CTE, lexema: -" + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }         
+			| '-' error
+{
+	yyerror("Error: constante negativa mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);	
+}
 		  ;
 
 %%
 
-void mostrarMensaje(String mensaje){
-	System.out.println(mensaje);
-}
-
 //////////////////////////////////////////////////// 
 //////////////Definiciones propias//////////////////
 ////////////////////////////////////////////////////
+
+void mostrarMensaje(String mensaje){
+	System.out.println(mensaje);
+}
 
 Compilador c;
 ArrayList<String> errores = new ArrayList<String>();
