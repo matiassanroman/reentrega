@@ -23,7 +23,7 @@ public class Compilador {
 	
 	//No ponemos privado para evitar mas metodos y que se pueda acceder de cualquier lado. 
 	static Hashtable<String,Simbolo> tablaSimbolo = new Hashtable<String,Simbolo>();
-	private static HashMap<String, Integer> tablaToken = new HashMap<String,Integer>();
+	static HashMap<String, Integer> tablaToken = new HashMap<String,Integer>();
 
 	//Acciones Semanticas
 	static AccionSemantica as1_agregar_buffer = new AS1_Agregar_Buffer();

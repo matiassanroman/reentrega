@@ -3,4 +3,3 @@
 /*  Tabla de Simbolos  */
 
 Clave: a	 Value: a	 Uso: ID
-Clave: 3	 Value: 3	 Uso: CTE
