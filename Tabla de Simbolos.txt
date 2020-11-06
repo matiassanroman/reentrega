@@ -2,4 +2,4 @@
 
 /*  Tabla de Simbolos  */
 
-Clave: poronga - verga	 Value: poronga - verga	 Uso: CADENA
+Clave: hola	 Value: hola	 Uso: ID

@@ -74,7 +74,22 @@ encabezadoProc : PROC identificador '(' parametrosProc ')' NA '=' CTE ',' NS '='
 	mostrarMensaje("Palabra reservada " + $9.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
+			   | PROC identificador '(' error ')' NA '=' CTE ',' NS '=' CTE
+{
+	yyerror("Error: Cantidad no permitida de parametros, en linea nro: " + compilador.Compilador.nroLinea);
+}
 			   ; 
+
+nombres : identificador
+{
+}
+		| identificador ',' identificador
+{
+}
+		| identificador ',' identificador ',' identificador
+{
+}
+		;
 
 parametrosProc : parametro
 {
@@ -126,17 +141,17 @@ sentenciaEjecutable : asignacion
 {
 	yyerror("Error: Formato de cadena incorrecto, en linea nro: "+ compilador.Compilador.nroLinea);
 }
-					| error '(' CADENA ')' ';'
-{
-	yyerror("Error: Palabra reservada mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);
-}
-					| identificador '(' parametrosProc ')' ';'
+					| identificador '(' nombres ')' ';'
 {
 	mostrarMensaje("Llamada a procedimiento con parametros en linea nro: " + compilador.Compilador.nroLinea);
 }
 					| identificador '(' ')' ';'
 {
 	mostrarMensaje("Llamda a procedimiento sin parametros en linea nro: "+compilador.Compilador.nroLinea);
+}
+					| identificador '(' error ')' ';'
+{
+	yyerror("Error: Cantidad no permitida de parametros, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 					| IF cuerpoIf
 {
@@ -343,10 +358,6 @@ tipo : FLOAT
 {
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
-	 | error
-{
-	yyerror("Error: tipo mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
-}
      ;
 
 identificador : ID
@@ -424,7 +435,10 @@ public int yylex() {
 }
 
 public void yyerror(String error){
-  this.errores.add(error + " en linea " + this.lineaActual) ;
+	if (error.equals("syntax error"))
+		this.errores.add(error + " en linea " + this.lineaActual);
+	else
+		errores.add(error);
 }
 
 public ArrayList<String> getErrores(){
