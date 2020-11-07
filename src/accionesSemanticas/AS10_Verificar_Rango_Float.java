@@ -33,7 +33,6 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 		else
 			flotante = Double.parseDouble(numero);
 		
-		System.out.println("ggg: " + flotante);
 		this.s = new Simbolo(normalizar(flotante));
 		s.setTipo("float");
 		// Si la cte ya está en la TS, retornar reference
