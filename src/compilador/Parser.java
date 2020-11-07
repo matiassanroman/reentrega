@@ -20,9 +20,6 @@
 package compilador;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.xml.bind.annotation.adapters.NormalizedStringAdapter;
-
 import accionesSemanticas.AS10_Verificar_Rango_Float;
 //#line 22 "Parser.java"
 
@@ -456,7 +453,6 @@ void mostrarMensaje(String mensaje){
 }
 
 void comprobarRango(String sval, boolean negativo){
-	
 	double flotante;
 	if (sval.contains("f"))
 		flotante = Double.parseDouble(sval.replace('f', 'E'));
@@ -535,7 +531,7 @@ public ArrayList<String> getReconocidos(){
 //////////////////////////////////////////////////// 
 //////////Fin Definiciones propias//////////////////
 ////////////////////////////////////////////////////
-//#line 446 "Parser.java"
+//#line 463 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1168,7 +1164,7 @@ case 82:
 	yyerror("Error: constante negativa mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);	
 }
 break;
-//#line 1074 "Parser.java"
+//#line 1091 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

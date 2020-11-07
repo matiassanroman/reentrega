@@ -409,17 +409,34 @@ void mostrarMensaje(String mensaje){
 }
 
 void comprobarRango(String sval, boolean negativo){
-	if(negativo) {
-		sval = "-" + sval;
-		if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
+	double flotante;
+	if (sval.contains("f"))
+		flotante = Double.parseDouble(sval.replace('f', 'E'));
+	else
+		flotante = Double.parseDouble(sval);
+	
+	if(negativo) {	
+		String aux = "-" + sval;
+		if ( AS10_Verificar_Rango_Float.estaEnRango(aux) ) {			
+			compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+			Simbolo s = new Simbolo(AS10_Verificar_Rango_Float.normalizar(flotante));
+			s.setValor("-"+s.getValor());
+			s.setTipo("float");
+			s.setUso("CTE");
+			compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
 			mostrarMensaje("CTE negativa esta dentro del rango");
-		else
+		}
+		else {
+			compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
 			mostrarMensaje("CTE negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+		}
 	}else {
 		if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
 			mostrarMensaje("CTE postiva esta dentro del rango");
-		else
+		else {
+			compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
 			mostrarMensaje("CTE postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+		}
 	}
 }
 
