@@ -2,6 +2,7 @@
 package compilador;
 import java.io.IOException;
 import java.util.ArrayList;
+import accionesSemanticas.AS10_Verificar_Rango_Float;
 %}
 
 %token ID IF THEN ELSE END_IF OUT FUNC RETURN FOR INTEGER FLOAT PROC NS NA CADENA UP DOWN CTE
@@ -378,6 +379,7 @@ constante : ctePositiva
 ctePositiva : CTE 
 {
 	mostrarMensaje("Token: CTE, lexema: "+ $1.ival + ", en linea " + compilador.Compilador.nroLinea);
+	comprobarRango($1.sval,false);
 }
 			| error 
 {
@@ -388,6 +390,7 @@ ctePositiva : CTE
 cteNegativa : '-' CTE 
 {
 	mostrarMensaje("Token: CTE, lexema: -" + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
+	comprobarRango($2.sval,true);
 }         
 			| '-' error
 {
@@ -403,6 +406,21 @@ cteNegativa : '-' CTE
 
 void mostrarMensaje(String mensaje){
 	System.out.println(mensaje);
+}
+
+void comprobarRango(String sval, boolean negativo){
+	if(negativo) {
+		sval = "-" + sval;
+		if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
+			mostrarMensaje("CTE negativa esta dentro del rango");
+		else
+			mostrarMensaje("CTE negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+	}else {
+		if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
+			mostrarMensaje("CTE postiva esta dentro del rango");
+		else
+			mostrarMensaje("CTE postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+	}
 }
 
 Compilador c;

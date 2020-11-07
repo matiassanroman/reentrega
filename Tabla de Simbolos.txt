@@ -2,8 +2,6 @@
 
 /*  Tabla de Simbolos  */
 
-<<<<<<< HEAD
+Clave: b	 Value: b	 Uso: ID
 Clave: a	 Value: a	 Uso: ID
-=======
-Clave: hola	 Value: hola	 Uso: ID
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
+Clave: 1.0f+0	 Value: 1.0f+0	 Uso: CTE

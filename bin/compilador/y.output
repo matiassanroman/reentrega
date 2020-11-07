@@ -41,18 +41,11 @@
   28                      | OUT '(' error ')' ';'
   29                      | identificador '(' nombres ')' ';'
   30                      | identificador '(' ')' ';'
-<<<<<<< HEAD
-  31                      | IF cuerpoIf
-  32                      | cicloFor
-  33                      | OUT '(' error ')' ';'
-  34                      | IF error
-=======
   31                      | identificador '(' error ')' ';'
   32                      | IF cuerpoIf
   33                      | cicloFor
 
   34  cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia '}'
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
   35  condicionFor : inicioFor ';' condiFOR ';' incDec
 
@@ -74,15 +67,10 @@
   46  cuerpoIf : cuerpoCompleto END_IF
   47           | cuerpoIncompleto END_IF
 
-<<<<<<< HEAD
-  48  cuerpoIf : cuerpoCompleto END_IF
-  49           | cuerpoIncompleto END_IF
-=======
   48  cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'
   49                 | '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}'
   50                 | '(' condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable
   51                 | '(' condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
   52  condicionIf : condicion
 
@@ -168,12 +156,7 @@ state 2
 
 
 state 3
-<<<<<<< HEAD
-	sentenciaEjecutable : IF . cuerpoIf  (31)
-	sentenciaEjecutable : IF . error  (34)
-=======
 	sentenciaEjecutable : IF . cuerpoIf  (32)
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
 	'('  shift 20
 	.  error
@@ -353,16 +336,10 @@ state 21
 
 
 state 22
-<<<<<<< HEAD
-	sentenciaEjecutable : IF error .  (34)
-
-	.  reduce 34
-=======
 	cuerpoIf : cuerpoCompleto . END_IF  (46)
 
 	END_IF  shift 48
 	.  error
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
 
 state 23
@@ -371,48 +348,6 @@ state 23
 	END_IF  shift 49
 	.  error
 
-<<<<<<< HEAD
-	identificador  goto 39
-	condicion  goto 40
-	condicionIf  goto 41
-
-
-state 24
-	sentenciaEjecutable : IF cuerpoIf .  (31)
-
-	.  reduce 31
-
-
-state 25
-	cuerpoIf : cuerpoCompleto . END_IF  (48)
-
-	END_IF  shift 42
-	.  error
-
-
-state 26
-	cuerpoIf : cuerpoIncompleto . END_IF  (49)
-
-	END_IF  shift 43
-	.  error
-
-
-state 27
-	sentenciaEjecutable : OUT '(' . CADENA ')' ';'  (28)
-	sentenciaEjecutable : OUT '(' . error ')' ';'  (33)
-
-	error  shift 44
-	CADENA  shift 45
-	.  error
-
-
-state 28
-	cicloFor : FOR '(' . condicionFor ')' '{' bloqueSentencia '}'  (35)
-	cicloFor : FOR '(' . error ')' '{' bloqueSentencia '}'  (36)
-	cicloFor : FOR '(' . condicionFor ')' '{' error '}'  (37)
-
-	error  shift 46
-=======
 
 state 24
 	sentenciaEjecutable : OUT '(' . CADENA ')' ';'  (27)
@@ -426,7 +361,6 @@ state 24
 state 25
 	cicloFor : FOR '(' . condicionFor ')' '{' bloqueSentencia '}'  (34)
 
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 	ID  shift 2
 	.  error
 
@@ -561,11 +495,6 @@ state 38
 
 
 state 39
-<<<<<<< HEAD
-	condicion : identificador . comparador asignacion  (41)
-	condicion : identificador . comparador identificador  (42)
-	condicion : identificador . comparador constante  (43)
-=======
 	factor : constante .  (65)
 
 	.  reduce 65
@@ -575,7 +504,6 @@ state 40
 	asignacion : error '=' expresion . ';'  (58)
 	expresion : expresion . '+' termino  (59)
 	expresion : expresion . '-' termino  (60)
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
 	'+'  shift 68
 	'-'  shift 69
@@ -583,15 +511,10 @@ state 40
 	.  error
 
 
-<<<<<<< HEAD
-state 40
-	condicionIf : condicion .  (51)
-=======
 state 41
 	expresion : termino .  (61)
 	termino : termino . '*' factor  (62)
 	termino : termino . '/' factor  (63)
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
 	'*'  shift 71
 	'/'  shift 72
@@ -600,34 +523,16 @@ state 41
 	';'  reduce 61
 
 
-<<<<<<< HEAD
-state 41
-	cuerpoCompleto : '(' condicionIf . ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'  (50)
-	cuerpoIncompleto : '(' condicionIf . ')' '{' bloqueThen '}'  (54)
-=======
 state 42
 	termino : factor .  (64)
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
 	.  reduce 64
 
 
-state 42
-	cuerpoIf : cuerpoCompleto END_IF .  (48)
-
-	.  reduce 48
-
-
 state 43
-<<<<<<< HEAD
-	cuerpoIf : cuerpoIncompleto END_IF .  (49)
-
-	.  reduce 49
-=======
 	constante : ctePositiva .  (77)
 
 	.  reduce 77
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
 
 state 44
@@ -1000,13 +905,6 @@ state 82
 	';'  shift 111
 	.  error
 
-<<<<<<< HEAD
-	identificador  goto 39
-	condiFOR  goto 110
-	condicion  goto 111
-
-=======
->>>>>>> 588f1b79b640368aac78b0db86313e639e9d0d02
 
 state 83
 	sentenciaEjecutable : OUT '(' CADENA ')' . ';'  (27)

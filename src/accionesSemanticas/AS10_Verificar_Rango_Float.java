@@ -30,32 +30,11 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 		double flotante;
 		if (numero.contains("f"))
 			flotante = Double.parseDouble(numero.replace('f', 'E'));
-		else {
-			falta caso 00.0001025
-			y exp negativo
-			String buffer = "109.10";
-	        String [] division = buffer.toString().split("\\."); 
-	        String aux = "";
-	        int primero = 0;
-	        int contador = 0;
-			if(division[0].length() > 1)
-			    for(int i=0; i<division[0].length(); i++){
-			        if(Character.getNumericValue(division[0].charAt(i)) != 0){
-			            primero = i;
-			            for(int j=i+1; j<division[0].length(); j++){
-			             aux = aux + String.valueOf(division[0].charAt(j));
-			             contador++;
-			            }
-			            break;
-			        }
-			    }
-			        
-			String union = division[0].charAt(primero) + "." + aux + division[1] + "f+" + String.valueOf(contador) ;
-			System.out.println("Hello World " + union);
-		}
+		else
 			flotante = Double.parseDouble(numero);
 		
-		this.s = new Simbolo(numero);
+		System.out.println("ggg: " + flotante);
+		this.s = new Simbolo(normalizar(flotante));
 		s.setTipo("float");
 		// Si la cte ya está en la TS, retornar reference
 		if(TablaSimbolo.contains(this.s) )  return TablaToken.get("CTE");
@@ -66,6 +45,19 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 		}
 	}
 
+	public static String normalizar(Double numero) {
+		int contador = 0;
+		String aux = "";
+		String union = "";
+        String [] division = numero.toString().split("\\."); 
+        if(division[0].length() > 1)
+		    for(int i=1; i<division[0].length(); i++){
+		         aux = aux + String.valueOf(division[0].charAt(i));
+		         contador++;
+		     }
+		return union = division[0].charAt(0) + "." + aux + division[1] + "f+" + String.valueOf(contador);
+	}
+	
 	public static boolean estaEnRango(String s) {
 		double flotante;
 		if (s.contains("f"))
