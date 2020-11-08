@@ -174,7 +174,6 @@ public class Compilador {
 		return token; 
 	}
 	
-	@SuppressWarnings("static-access")
 	public static void main(String[] args) throws IOException {
 				
 		// Esta codiicacion fue generada desde yacc, el cual a cada token
@@ -216,7 +215,7 @@ public class Compilador {
 				errores = p.getErrores();
 				reconocidos = p.getReconocidos();
 				for (int i=0; i<errores.size(); i++)
-					System.out.println("Errores: " + errores.get(i));
+					System.out.println(errores.get(i));
 				
 				for (int i=0; i<reconocidos.size(); i++)
 					System.out.println("Reconocidos: " + reconocidos.get(i));

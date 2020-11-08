@@ -2,9 +2,12 @@
 
 /*  Tabla de Simbolos  */
 
-<<<<<<< HEAD
-Clave: a	 Value: a	 Uso: ID
-=======
+Clave: f	 Value: f
+Clave: d	 Value: d
+Clave: z	 Value: z
+Clave: c	 Value: c
+Clave: y	 Value: y
+Clave: b	 Value: b
 Clave: a	 Value: a
-Clave: 	 Value: 
->>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
+Clave: 2	 Value: 2
+Clave: 1	 Value: 1

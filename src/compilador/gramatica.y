@@ -17,6 +17,10 @@ programa : bloquePrograma
 {
 	mostrarMensaje("Reconoce bien el programa");
 }
+		 | error
+{
+	yyerror("Error: programa invalido: " + compilador.Compilador.nroLinea);
+}
 		 ;
 
 bloquePrograma : bloquePrograma sentenciaDeclarativa
@@ -62,7 +66,6 @@ encabezadoProc : PROC identificador '(' parametrosProc ')' NA '=' CTE ',' NS '='
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + $6.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token " + $7.sval + ", en linea " + compilador.Compilador.nroLinea);
-	mostrarMensaje("Token " + $9.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token " + $11.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
@@ -72,7 +75,6 @@ encabezadoProc : PROC identificador '(' parametrosProc ')' NA '=' CTE ',' NS '='
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + $5.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token " + $6.sval + ", en linea " + compilador.Compilador.nroLinea);
-	mostrarMensaje("Token " + $8.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + $9.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
@@ -112,7 +114,6 @@ parametro : tipo identificador
 
 bloqueProc : '{' bloque '}'
 {
-	mostrarMensaje("Bloque de procedimiento en linea nro: " + compilador.Compilador.nroLinea);
 }
 		   ;
 
@@ -130,7 +131,7 @@ bloque : bloque sentenciaDeclarativa
 }
 	   | error
 {
-	yyerror("Error: caracteres invalidos, en linea nro: "+ compilador.Compilador.nroLinea);
+	yyerror("Error: no puede haber un seccion vacia, en linea nro: "+ compilador.Compilador.nroLinea);
 }
        ;
 
@@ -294,11 +295,9 @@ asignacion : identificador '=' expresion
 
 expresion : expresion '+' termino
 {
-	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 		  | expresion '-' termino
 {
-	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 		  | termino
 {	
@@ -307,11 +306,9 @@ expresion : expresion '+' termino
 
 termino : termino '*' factor
 {
-	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 		| termino '/' factor
 {
-	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 		| factor
 {
@@ -383,7 +380,7 @@ constante : ctePositiva
 
 ctePositiva : CTE 
 {
-	mostrarMensaje("Token: CTE, lexema: "+ $1.ival + ", en linea " + compilador.Compilador.nroLinea);
+	mostrarMensaje("Token: CTE, en linea " + compilador.Compilador.nroLinea);
 	comprobarRango($1.sval,false);
 }
 			| error 
@@ -394,7 +391,7 @@ ctePositiva : CTE
 
 cteNegativa : '-' CTE 
 {
-	mostrarMensaje("Token: CTE, lexema: -" + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
+	mostrarMensaje("Token: CTE, en linea " + compilador.Compilador.nroLinea);
 	comprobarRango($2.sval,true);
 }         
 			| '-' error
