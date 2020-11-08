@@ -460,7 +460,7 @@ void comprobarRango(String sval, boolean negativo){
 	//ES NEGATIVO???
 	if(negativo) {	
 		//ES FLOAT Y NEGATIVO???
-		if (sval.contains("f")){
+		if (sval.contains("f") || sval.contains(".")){
 			flotante = Double.parseDouble(sval.replace('f', 'E'));
 			String aux = "-" + sval;
 			if ( AS10_Verificar_Rango_Float.estaEnRango(aux) ) {			
@@ -468,7 +468,6 @@ void comprobarRango(String sval, boolean negativo){
 				Simbolo s = new Simbolo(AS10_Verificar_Rango_Float.normalizar(flotante));
 				s.setValor("-"+s.getValor());
 				s.setTipo("float");
-				s.setUso("CTE");
 				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
 				mostrarMensaje("CTE FLOAT negativa esta dentro del rango");
 			}
@@ -485,7 +484,6 @@ void comprobarRango(String sval, boolean negativo){
 				Simbolo s = new Simbolo(sval);
 				s.setValor("-"+s.getValor());
 				s.setTipo("int");
-				s.setUso("CTE");
 				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
 				mostrarMensaje("CTE ENTERA negativa esta dentro del rango");
 			}
@@ -497,7 +495,7 @@ void comprobarRango(String sval, boolean negativo){
 	//ES POSITIVO	
 	}else {
 		// ES FLOAT Y POSTIVO???
-		if (sval.contains("f")){
+		if (sval.contains("f") || sval.contains(".")){
 			flotante = Double.parseDouble(sval.replace('f', 'E'));
 			if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
 			mostrarMensaje("CTE FLOAT postiva esta dentro del rango");
@@ -566,7 +564,7 @@ public ArrayList<String> getReconocidos(){
 //////////////////////////////////////////////////// 
 //////////Fin Definiciones propias//////////////////
 ////////////////////////////////////////////////////
-//#line 498 "Parser.java"
+//#line 496 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1199,7 +1197,7 @@ case 82:
 	yyerror("Error: constante negativa mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);	
 }
 break;
-//#line 1126 "Parser.java"
+//#line 1124 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -2,5 +2,5 @@
 
 /*  Tabla de Simbolos  */
 
-Clave: a	 Value: a	 Uso: ID
-Clave: -32767	 Value: -32767	 Uso: CTE
+Clave: a	 Value: a
+Clave: 3.405f+0	 Value: 3.405f+0

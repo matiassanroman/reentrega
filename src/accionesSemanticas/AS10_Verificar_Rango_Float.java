@@ -28,18 +28,25 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 	public int execute(StringBuffer buffer, char c) {
 		String numero = buffer.toString();
 		double flotante;
-		if (numero.contains("f"))
+		Simbolo s;
+		if (numero.contains("f")) {
 			flotante = Double.parseDouble(numero.replace('f', 'E'));
-		else
+			s = new Simbolo(normalizar(flotante));
+		}
+		else {
 			flotante = Double.parseDouble(numero);
+			s = new Simbolo(String.valueOf(normalizar(flotante)));
+		}
 		
-		this.s = new Simbolo(normalizar(flotante));
+		System.out.println("FLOTANTE: " + flotante);
+		
+		System.out.println("VALOR: " + s.getValor());
 		s.setTipo("float");
 		// Si la cte ya está en la TS, retornar reference
-		if(TablaSimbolo.contains(this.s) )  return TablaToken.get("CTE");
+		if(TablaSimbolo.contains(s) )  return TablaToken.get("CTE");
 		else {
-			s.setUso("CTE");
 			TablaSimbolo.put(s.getValor(),s);
+			System.out.println("Holaaa: " + s.getValor());
 			return TablaToken.get("CTE");
 		}
 	}
