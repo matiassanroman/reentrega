@@ -19,7 +19,7 @@ programa : bloquePrograma
 }
 		 | error
 {
-	yyerror("Error: programa invalido: " + compilador.Compilador.nroLinea);
+	yyerror("Programa invalido, error en linea: " + compilador.Compilador.nroLinea);
 }
 		 ;
 

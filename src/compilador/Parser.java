@@ -740,7 +740,7 @@ break;
 case 2:
 //#line 21 "gramatica.y"
 {
-	yyerror("Error: programa invalido: " + compilador.Compilador.nroLinea);
+	yyerror("Programa invalido, error en linea: " + compilador.Compilador.nroLinea);
 }
 break;
 case 3:

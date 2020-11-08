@@ -168,6 +168,7 @@ public class Compilador {
 			// Por ultima damos algun tramatiento de errores lexicos, donde el valor negativo
 			// que se retornó por una accion semantica X, indica de que erroe lexico se trata
 			else if (token.getToken() == -2){ System.out.println("Error: caracter inválido "+asciiActual+ " en la linea " + nroLinea); token.setToken(0); return token; }			
+			else if (token.getToken() == -1){ System.out.println("Error en la linea "+nroLinea+": Palabra reservada mal escrita"); token.setToken(0); return token; }
 		}
 		while (!hayToken);
 		return token; 
