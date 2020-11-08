@@ -514,7 +514,7 @@ void comprobarRango(String sval, boolean negativo){
 			mostrarMensaje("CTE FLOAT postiva esta dentro del rango");
 			else {
 				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
-				mostrarMensaje("CTE FLOAT postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+				mostrarMensaje("CTE FLOAT positiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
 			}
 		}
 		// ES ENTERA Y POSITIVA
