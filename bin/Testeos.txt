@@ -1,3 +1,1 @@
-PROC a(INTEGER b, INTEGER c,INTEGER d, FLOAT f) NA = 1_i , NS = 2_i{
-	y = z;
-}
+OU ("hola ");
