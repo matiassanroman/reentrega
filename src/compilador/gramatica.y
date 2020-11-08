@@ -60,16 +60,7 @@ declaracionProcedimiento : encabezadoProc bloqueProc
 }
 						 ;
 
-encabezadoProc : PROC identificador '(' parametrosProc ')' NA '=' CTE ',' NS '=' CTE
-{
-	mostrarMensaje("Procedimiento con parametros en linea nro: "+compilador.Compilador.nroLinea);
-	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
-	mostrarMensaje("Palabra reservada " + $6.sval + ", en linea " + compilador.Compilador.nroLinea);
-	mostrarMensaje("Token " + $7.sval + ", en linea " + compilador.Compilador.nroLinea);
-	mostrarMensaje("Palabra reservada " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
-	mostrarMensaje("Token " + $11.sval + ", en linea " + compilador.Compilador.nroLinea);
-}
-			   | PROC identificador '(' ')' NA '=' CTE ',' NS '=' CTE
+encabezadoProc : | PROC identificador '(' ')' NA '=' CTE ',' NS '=' CTE
 {
 	mostrarMensaje("Procedimiento sin parametros en linea nro: "+compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
@@ -78,11 +69,39 @@ encabezadoProc : PROC identificador '(' parametrosProc ')' NA '=' CTE ',' NS '='
 	mostrarMensaje("Palabra reservada " + $9.sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
-			   | PROC identificador '(' error ')' NA '=' CTE ',' NS '=' CTE
+				 | PROC identificador '(' tipo identificador ')' NA '=' CTE ',' NS '=' CTE
+{
+	mostrarMensaje("Procedimiento con parametros en linea nro: "+compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $6.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Token " + $7.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Token " + $11.sval + ", en linea " + compilador.Compilador.nroLinea);
+}
+				 | PROC identificador '(' tipo identificador ',' tipo identificador ')' NA '=' CTE ',' NS '=' CTE
+{
+	mostrarMensaje("Procedimiento con parametros en linea nro: "+compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $6.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Token " + $7.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Token " + $11.sval + ", en linea " + compilador.Compilador.nroLinea);
+}
+				 |PROC identificador '(' tipo identificador ',' tipo identificador ',' tipo identificador ')' NA '=' CTE ',' NS '=' CTE
+{
+	mostrarMensaje("Procedimiento con parametros en linea nro: "+compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $1.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $6.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Token " + $7.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Palabra reservada " + $10.sval + ", en linea " + compilador.Compilador.nroLinea);
+	//mostrarMensaje("Token " + $11.sval + ", en linea " + compilador.Compilador.nroLinea);
+}		  
+			     | PROC identificador '(' tipo identificador ',' tipo identificador ',' tipo identificador error ')' NA '=' CTE ',' NS '=' CTE
 {
 	yyerror("Error: Cantidad no permitida de parametros, en linea nro: " + compilador.Compilador.nroLinea);
+	mostrarMensaje("parametro1111111 error: "+ $12.sval+ "LINEA:" +compilador.Compilador.nroLinea);
 }
-			   ; 
+				 ; 
 
 nombres : identificador
 {
@@ -94,23 +113,6 @@ nombres : identificador
 {
 }
 		;
-
-parametrosProc : parametro
-{
-}
-			   | parametro ',' parametro
-{
-}
-			   | parametro ',' parametro ',' parametro
-{
-}
-			   ;
-
-parametro : tipo identificador
-{
-	mostrarMensaje("Parametro, en linea nro: " + compilador.Compilador.nroLinea);
-}
-		  ;
 
 bloqueProc : '{' bloque '}'
 {
