@@ -3,4 +3,4 @@
 /*  Tabla de Simbolos  */
 
 Clave: a	 Value: a
-Clave: 3.405f+0	 Value: 3.405f+0
+Clave: 	 Value: 

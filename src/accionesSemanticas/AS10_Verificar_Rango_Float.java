@@ -31,37 +31,55 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 		Simbolo s;
 		if (numero.contains("f")) {
 			flotante = Double.parseDouble(numero.replace('f', 'E'));
-			s = new Simbolo(normalizar(flotante));
+			s = new Simbolo(String.valueOf(flotante));
 		}
 		else {
 			flotante = Double.parseDouble(numero);
 			s = new Simbolo(String.valueOf(normalizar(flotante)));
 		}
 		
-		System.out.println("FLOTANTE: " + flotante);
-		
-		System.out.println("VALOR: " + s.getValor());
 		s.setTipo("float");
 		// Si la cte ya está en la TS, retornar reference
 		if(TablaSimbolo.contains(s) )  return TablaToken.get("CTE");
 		else {
 			TablaSimbolo.put(s.getValor(),s);
-			System.out.println("Holaaa: " + s.getValor());
 			return TablaToken.get("CTE");
 		}
 	}
 
 	public static String normalizar(Double numero) {
+		System.out.println("NUMERO: " + numero);
 		int contador = 0;
 		String aux = "";
 		String union = "";
         String [] division = numero.toString().split("\\."); 
-        if(division[0].length() > 1)
+        if(Integer.valueOf(division[0]) > 1)
 		    for(int i=1; i<division[0].length(); i++){
 		         aux = aux + String.valueOf(division[0].charAt(i));
 		         contador++;
 		     }
-		return union = division[0].charAt(0) + "." + aux + division[1] + "f+" + String.valueOf(contador);
+        else {
+        	int j=1;
+        	contador--;
+        	String [] subdivision = division[1].split("\\."); 
+        	while(j < subdivision[j].length() && Integer.valueOf(subdivision[j]) < 1) {
+        		contador--;
+        		j++;
+        	}
+        	for(int i=j; i< subdivision[j].length(); i++) {
+        		if(i==j) {
+        			aux = subdivision[j] + ".";
+        		}
+        		aux = aux + subdivision[j];
+        	}
+        		
+        		
+        }
+        	 
+        System.out.println("EXC: " + aux + "f" + contador);
+        
+		//System.out.println("KKK: " +  division[0].charAt(0) + "." + aux + division[1] + "f+" + String.valueOf(contador));
+		return "";
 	}
 	
 	public static boolean estaEnRango(String s) {
