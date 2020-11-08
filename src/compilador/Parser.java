@@ -20,7 +20,9 @@
 package compilador;
 import java.io.IOException;
 import java.util.ArrayList;
-//#line 21 "Parser.java"
+import accionesSemanticas.AS10_Verificar_Rango_Float;
+import accionesSemanticas.AS9_Verificar_Rango_Constante;
+//#line 23 "Parser.java"
 
 
 
@@ -454,6 +456,70 @@ void mostrarMensaje(String mensaje){
 	System.out.println(mensaje);
 }
 
+void comprobarRango(String sval, boolean negativo){
+	double flotante;
+	int entero;
+
+	//ES NEGATIVO???
+	if(negativo) {	
+		//ES FLOAT Y NEGATIVO???
+		if (sval.contains("f") || sval.contains(".")){
+			flotante = Double.parseDouble(sval.replace('f', 'E'));
+			String aux = "-" + sval;
+			if ( AS10_Verificar_Rango_Float.estaEnRango(aux) ) {			
+				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				Simbolo s = new Simbolo(AS10_Verificar_Rango_Float.normalizar(flotante));
+				s.setValor("-"+s.getValor());
+				s.setTipo("float");
+				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				mostrarMensaje("CTE FLOAT negativa esta dentro del rango");
+			}
+			else {
+				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				mostrarMensaje("CTE FLOAT negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+		//ES ENTERO Y NEGATIVO
+		else{
+			String aux = "-" + sval;
+			if ( AS9_Verificar_Rango_Constante.estaEnRango(aux) ) {			
+				compilador.Compilador.tablaSimbolo.remove(sval);
+				Simbolo s = new Simbolo(sval);
+				s.setValor("-"+s.getValor());
+				s.setTipo("int");
+				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				mostrarMensaje("CTE ENTERA negativa esta dentro del rango");
+			}
+			else {
+				compilador.Compilador.tablaSimbolo.remove(sval);
+				mostrarMensaje("CTE ENTERA negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+	//ES POSITIVO	
+	}else {
+		// ES FLOAT Y POSTIVO???
+		if (sval.contains("f") || sval.contains(".")){
+			flotante = Double.parseDouble(sval.replace('f', 'E'));
+			if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
+			mostrarMensaje("CTE FLOAT postiva esta dentro del rango");
+			else {
+				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				mostrarMensaje("CTE FLOAT postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+		// ES ENTERA Y POSITIVA
+		else{
+			if ( AS9_Verificar_Rango_Constante.estaEnRango(sval) )
+			mostrarMensaje("CTE ENTERA postiva esta dentro del rango");
+			else {
+				compilador.Compilador.tablaSimbolo.remove(sval);
+				mostrarMensaje("CTE ENTERA postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+		
+	}
+}
+
 Compilador c;
 ArrayList<String> errores = new ArrayList<String>();
 Token t;
@@ -501,7 +567,11 @@ public ArrayList<String> getReconocidos(){
 //////////////////////////////////////////////////// 
 //////////Fin Definiciones propias//////////////////
 ////////////////////////////////////////////////////
+<<<<<<< HEAD
 //#line 433 "Parser.java"
+=======
+//#line 496 "Parser.java"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -656,60 +726,60 @@ boolean doaction;
       {
 //########## USER-SUPPLIED ACTIONS ##########
 case 1:
-//#line 15 "gramatica.y"
+//#line 17 "gramatica.y"
 {
 	mostrarMensaje("Reconoce bien el programa");
 }
 break;
 case 2:
-//#line 21 "gramatica.y"
+//#line 23 "gramatica.y"
 {
 }
 break;
 case 3:
-//#line 24 "gramatica.y"
+//#line 26 "gramatica.y"
 {
 }
 break;
 case 4:
-//#line 27 "gramatica.y"
+//#line 29 "gramatica.y"
 {
 }
 break;
 case 5:
-//#line 30 "gramatica.y"
+//#line 32 "gramatica.y"
 {
 }
 break;
 case 6:
-//#line 35 "gramatica.y"
+//#line 37 "gramatica.y"
 {
 	mostrarMensaje("Declaracion de una o mas variables en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 7:
-//#line 39 "gramatica.y"
+//#line 41 "gramatica.y"
 {
 }
 break;
 case 8:
-//#line 44 "gramatica.y"
+//#line 46 "gramatica.y"
 {
 }
 break;
 case 9:
-//#line 47 "gramatica.y"
+//#line 49 "gramatica.y"
 {
 }
 break;
 case 10:
-//#line 52 "gramatica.y"
+//#line 54 "gramatica.y"
 {
 	mostrarMensaje("Procedimiento completo, en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 11:
-//#line 58 "gramatica.y"
+//#line 60 "gramatica.y"
 {
 	mostrarMensaje("Procedimiento con parametros en linea nro: "+compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + val_peek(11).sval + ", en linea " + compilador.Compilador.nroLinea);
@@ -721,7 +791,7 @@ case 11:
 }
 break;
 case 12:
-//#line 68 "gramatica.y"
+//#line 70 "gramatica.y"
 {
 	mostrarMensaje("Procedimiento sin parametros en linea nro: "+compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + val_peek(10).sval + ", en linea " + compilador.Compilador.nroLinea);
@@ -733,86 +803,98 @@ case 12:
 }
 break;
 case 13:
-//#line 78 "gramatica.y"
+//#line 80 "gramatica.y"
 {
 	yyerror("Error: Cantidad no permitida de parametros, en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 14:
-//#line 84 "gramatica.y"
+//#line 86 "gramatica.y"
 {
 }
 break;
 case 15:
-//#line 87 "gramatica.y"
+//#line 89 "gramatica.y"
 {
 }
 break;
 case 16:
-//#line 90 "gramatica.y"
+//#line 92 "gramatica.y"
 {
 }
 break;
 case 17:
-//#line 95 "gramatica.y"
+//#line 97 "gramatica.y"
 {
 }
 break;
 case 18:
-//#line 98 "gramatica.y"
+//#line 100 "gramatica.y"
 {
 }
 break;
 case 19:
-//#line 101 "gramatica.y"
+//#line 103 "gramatica.y"
 {
 }
 break;
 case 20:
-//#line 106 "gramatica.y"
+//#line 108 "gramatica.y"
 {
 	mostrarMensaje("Parametro, en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 21:
-//#line 112 "gramatica.y"
+//#line 114 "gramatica.y"
 {
 	mostrarMensaje("Bloque de procedimiento en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 22:
-//#line 118 "gramatica.y"
+//#line 120 "gramatica.y"
 {
 }
 break;
 case 23:
-//#line 121 "gramatica.y"
+//#line 123 "gramatica.y"
 {
 }
 break;
 case 24:
-//#line 124 "gramatica.y"
+//#line 126 "gramatica.y"
 {
 }
 break;
 case 25:
-//#line 127 "gramatica.y"
+//#line 129 "gramatica.y"
 {
 }
 break;
 case 26:
+<<<<<<< HEAD
 //#line 130 "gramatica.y"
+=======
+//#line 134 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	yyerror("Error: caracteres invalidos, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 break;
 case 27:
+<<<<<<< HEAD
 //#line 136 "gramatica.y"
+=======
+//#line 137 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 28:
+<<<<<<< HEAD
 //#line 139 "gramatica.y"
+=======
+//#line 143 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Palabra reservada " + val_peek(4).sval + ", en linea " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Token CADENA, lexema: " + val_peek(2).sval + ", en linea " + compilador.Compilador.nroLinea);
@@ -820,141 +902,202 @@ case 28:
 }
 break;
 case 29:
-//#line 145 "gramatica.y"
+//#line 147 "gramatica.y"
 {
 	yyerror("Error: Formato de cadena incorrecto, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 break;
 case 30:
-//#line 149 "gramatica.y"
+//#line 151 "gramatica.y"
 {
 	mostrarMensaje("Llamada a procedimiento con parametros en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 31:
-//#line 153 "gramatica.y"
+//#line 155 "gramatica.y"
 {
 	mostrarMensaje("Llamda a procedimiento sin parametros en linea nro: "+compilador.Compilador.nroLinea);
 }
 break;
 case 32:
-//#line 157 "gramatica.y"
+//#line 159 "gramatica.y"
 {
 	yyerror("Error: Cantidad no permitida de parametros, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 break;
 case 33:
-//#line 161 "gramatica.y"
+//#line 163 "gramatica.y"
 {
 	mostrarMensaje("Palabra reservada " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 34:
+<<<<<<< HEAD
 //#line 165 "gramatica.y"
+=======
+//#line 169 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Ciclo FOR en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 35:
+<<<<<<< HEAD
 //#line 171 "gramatica.y"
+=======
+//#line 175 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Palabra reservada " + val_peek(6).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 36:
+<<<<<<< HEAD
 //#line 177 "gramatica.y"
+=======
+//#line 181 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Encabezado de ciclo FOR, en linea nro: "+compilador.Compilador.nroLinea);
 }
 break;
 case 37:
+<<<<<<< HEAD
 //#line 183 "gramatica.y"
+=======
+//#line 186 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 38:
+<<<<<<< HEAD
 //#line 188 "gramatica.y"
+=======
+//#line 192 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Token " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 39:
+<<<<<<< HEAD
 //#line 194 "gramatica.y"
+=======
+//#line 195 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 40:
+<<<<<<< HEAD
 //#line 197 "gramatica.y"
+=======
+//#line 198 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 41:
+<<<<<<< HEAD
 //#line 200 "gramatica.y"
+=======
+//#line 203 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 42:
-//#line 205 "gramatica.y"
+//#line 207 "gramatica.y"
 {
 	mostrarMensaje("Palabra reservada " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 43:
-//#line 209 "gramatica.y"
+//#line 211 "gramatica.y"
 {
 	mostrarMensaje("Palabra reservada " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 44:
+<<<<<<< HEAD
 //#line 213 "gramatica.y"
+=======
+//#line 217 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	yyerror("Error: incremento/decremento mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 break;
 case 45:
+<<<<<<< HEAD
 //#line 219 "gramatica.y"
+=======
+//#line 220 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 46:
+<<<<<<< HEAD
 //#line 222 "gramatica.y"
+=======
+//#line 225 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 47:
-//#line 227 "gramatica.y"
+//#line 229 "gramatica.y"
 {
 	mostrarMensaje("Palabra reservada " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 48:
+<<<<<<< HEAD
 //#line 231 "gramatica.y"
+=======
+//#line 235 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Palabra reservada " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 49:
+<<<<<<< HEAD
 //#line 237 "gramatica.y"
+=======
+//#line 240 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("IF con ELSE, en linea nro: " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + val_peek(3).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 50:
+<<<<<<< HEAD
 //#line 242 "gramatica.y"
+=======
+//#line 245 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("IF con ELSE, con sentencia unica en rama verdadera, en linea nro: " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + val_peek(3).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 51:
+<<<<<<< HEAD
 //#line 247 "gramatica.y"
+=======
+//#line 250 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("IF con ELSE, con sentencia unica en rama falsa, en linea nro: " + compilador.Compilador.nroLinea);
 	mostrarMensaje("Palabra reservada " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 52:
+<<<<<<< HEAD
 //#line 252 "gramatica.y"
 {
 	mostrarMensaje("IF con ELSE, con sentencia unica en ambas ramas, en linea nro: " + compilador.Compilador.nroLinea);
@@ -968,45 +1111,71 @@ case 53:
 break;
 case 54:
 //#line 264 "gramatica.y"
+=======
+//#line 257 "gramatica.y"
+{	
+}
+break;
+case 53:
+//#line 262 "gramatica.y"
+{
+}
+break;
+case 54:
+//#line 267 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 55:
+<<<<<<< HEAD
 //#line 269 "gramatica.y"
+=======
+//#line 272 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 56:
-//#line 274 "gramatica.y"
+//#line 276 "gramatica.y"
 {
 	mostrarMensaje("IF sin ELSE, en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 57:
+<<<<<<< HEAD
 //#line 278 "gramatica.y"
+=======
+//#line 282 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("IF sin ELSE, con sentencia unica, en linea nro: " + compilador.Compilador.nroLinea);
 }
 break;
 case 58:
-//#line 284 "gramatica.y"
+//#line 286 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 59:
+<<<<<<< HEAD
 //#line 288 "gramatica.y"
+=======
+//#line 292 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	yyerror("Error: identificador mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 break;
 case 60:
-//#line 294 "gramatica.y"
+//#line 296 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 61:
+<<<<<<< HEAD
 //#line 298 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
@@ -1015,119 +1184,171 @@ break;
 case 62:
 //#line 302 "gramatica.y"
 {	
+=======
+//#line 300 "gramatica.y"
+{	
+}
+break;
+case 62:
+//#line 305 "gramatica.y"
+{
+	mostrarMensaje("Token " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 }
 break;
 case 63:
-//#line 307 "gramatica.y"
+//#line 309 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 64:
-//#line 311 "gramatica.y"
+//#line 313 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(1).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 65:
+<<<<<<< HEAD
 //#line 315 "gramatica.y"
+=======
+//#line 318 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 66:
+<<<<<<< HEAD
 //#line 320 "gramatica.y"
+=======
+//#line 321 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 67:
+<<<<<<< HEAD
 //#line 323 "gramatica.y"
+=======
+//#line 326 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 68:
-//#line 328 "gramatica.y"
+//#line 330 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 69:
-//#line 332 "gramatica.y"
+//#line 334 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 70:
-//#line 336 "gramatica.y"
+//#line 338 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 71:
-//#line 340 "gramatica.y"
+//#line 342 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 72:
-//#line 344 "gramatica.y"
+//#line 346 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 73:
-//#line 348 "gramatica.y"
+//#line 350 "gramatica.y"
 {
 	mostrarMensaje("Token " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 74:
+<<<<<<< HEAD
 //#line 352 "gramatica.y"
+=======
+//#line 356 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	yyerror("Error: comparador no permitido, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 break;
 case 75:
-//#line 358 "gramatica.y"
+//#line 360 "gramatica.y"
 {
 	mostrarMensaje("Palabra reservada " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 76:
+<<<<<<< HEAD
 //#line 362 "gramatica.y"
+=======
+//#line 366 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Palabra reservada " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 77:
+<<<<<<< HEAD
 //#line 368 "gramatica.y"
+=======
+//#line 373 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 	mostrarMensaje("Token ID, lexema: " + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 78:
+<<<<<<< HEAD
 //#line 375 "gramatica.y"
+=======
+//#line 376 "gramatica.y"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 {
 }
 break;
 case 79:
+<<<<<<< HEAD
 //#line 378 "gramatica.y"
 {
+=======
+//#line 381 "gramatica.y"
+{
+	mostrarMensaje("Token: CTE, lexema: "+ val_peek(0).ival + ", en linea " + compilador.Compilador.nroLinea);
+	comprobarRango(val_peek(0).sval,false);
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 }
 break;
 case 80:
-//#line 383 "gramatica.y"
+//#line 386 "gramatica.y"
 {
 	mostrarMensaje("Token: CTE, lexema: "+ val_peek(0).ival + ", en linea " + compilador.Compilador.nroLinea);
 }
 break;
 case 81:
+<<<<<<< HEAD
 //#line 387 "gramatica.y"
 {
 	yyerror("Error: constante positiva mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);
+=======
+//#line 392 "gramatica.y"
+{
+	mostrarMensaje("Token: CTE, lexema: -" + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
+	comprobarRango(val_peek(0).sval,true);
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 }
 break;
 case 82:
-//#line 393 "gramatica.y"
+//#line 397 "gramatica.y"
 {
 	mostrarMensaje("Token: CTE, lexema: -" + val_peek(0).sval + ", en linea " + compilador.Compilador.nroLinea);
 }
@@ -1138,7 +1359,11 @@ case 83:
 	yyerror("Error: constante negativa mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);	
 }
 break;
+<<<<<<< HEAD
 //#line 1065 "Parser.java"
+=======
+//#line 1124 "Parser.java"
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

@@ -26,7 +26,6 @@ public class AS5_Fin_Cadena extends AccionSemantica{
 		if(tablaSimbolo.contains(this.s) ){ return tablaToken.get("CADENA"); }
 		// Si no está en la tabla
 		else{                                			
-			s.setUso("CADENA");
 			tablaSimbolo.put(s.getValor(),s);
 			return tablaToken.get("CADENA");
 		}

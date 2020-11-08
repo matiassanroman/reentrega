@@ -2,6 +2,8 @@
 package compilador;
 import java.io.IOException;
 import java.util.ArrayList;
+import accionesSemanticas.AS10_Verificar_Rango_Float;
+import accionesSemanticas.AS9_Verificar_Rango_Constante;
 %}
 
 %token ID IF THEN ELSE END_IF OUT FUNC RETURN FOR INTEGER FLOAT PROC NS NA CADENA UP DOWN CTE
@@ -382,6 +384,7 @@ constante : ctePositiva
 ctePositiva : CTE 
 {
 	mostrarMensaje("Token: CTE, lexema: "+ $1.ival + ", en linea " + compilador.Compilador.nroLinea);
+	comprobarRango($1.sval,false);
 }
 			| error 
 {
@@ -392,6 +395,7 @@ ctePositiva : CTE
 cteNegativa : '-' CTE 
 {
 	mostrarMensaje("Token: CTE, lexema: -" + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
+	comprobarRango($2.sval,true);
 }         
 			| '-' error
 {
@@ -407,6 +411,70 @@ cteNegativa : '-' CTE
 
 void mostrarMensaje(String mensaje){
 	System.out.println(mensaje);
+}
+
+void comprobarRango(String sval, boolean negativo){
+	double flotante;
+	int entero;
+
+	//ES NEGATIVO???
+	if(negativo) {	
+		//ES FLOAT Y NEGATIVO???
+		if (sval.contains("f") || sval.contains(".")){
+			flotante = Double.parseDouble(sval.replace('f', 'E'));
+			String aux = "-" + sval;
+			if ( AS10_Verificar_Rango_Float.estaEnRango(aux) ) {			
+				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				Simbolo s = new Simbolo(AS10_Verificar_Rango_Float.normalizar(flotante));
+				s.setValor("-"+s.getValor());
+				s.setTipo("float");
+				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				mostrarMensaje("CTE FLOAT negativa esta dentro del rango");
+			}
+			else {
+				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				mostrarMensaje("CTE FLOAT negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+		//ES ENTERO Y NEGATIVO
+		else{
+			String aux = "-" + sval;
+			if ( AS9_Verificar_Rango_Constante.estaEnRango(aux) ) {			
+				compilador.Compilador.tablaSimbolo.remove(sval);
+				Simbolo s = new Simbolo(sval);
+				s.setValor("-"+s.getValor());
+				s.setTipo("int");
+				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				mostrarMensaje("CTE ENTERA negativa esta dentro del rango");
+			}
+			else {
+				compilador.Compilador.tablaSimbolo.remove(sval);
+				mostrarMensaje("CTE ENTERA negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+	//ES POSITIVO	
+	}else {
+		// ES FLOAT Y POSTIVO???
+		if (sval.contains("f") || sval.contains(".")){
+			flotante = Double.parseDouble(sval.replace('f', 'E'));
+			if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
+			mostrarMensaje("CTE FLOAT postiva esta dentro del rango");
+			else {
+				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				mostrarMensaje("CTE FLOAT postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+		// ES ENTERA Y POSITIVA
+		else{
+			if ( AS9_Verificar_Rango_Constante.estaEnRango(sval) )
+			mostrarMensaje("CTE ENTERA postiva esta dentro del rango");
+			else {
+				compilador.Compilador.tablaSimbolo.remove(sval);
+				mostrarMensaje("CTE ENTERA postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
+			}
+		}
+		
+	}
 }
 
 Compilador c;

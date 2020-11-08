@@ -2,4 +2,9 @@
 
 /*  Tabla de Simbolos  */
 
+<<<<<<< HEAD
 Clave: a	 Value: a	 Uso: ID
+=======
+Clave: a	 Value: a
+Clave: 	 Value: 
+>>>>>>> 384b1bd24415329ddf6a0f51e8879c8dee00cbc6
