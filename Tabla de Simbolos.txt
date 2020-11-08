@@ -2,4 +2,4 @@
 
 /*  Tabla de Simbolos  */
 
-Clave: hola	 Value: hola	 Uso: ID
+Clave: a	 Value: a	 Uso: ID

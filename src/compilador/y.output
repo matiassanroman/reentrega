@@ -35,87 +35,88 @@
   23         | bloque sentenciaEjecutable
   24         | sentenciaDeclarativa
   25         | sentenciaEjecutable
+  26         | error
 
-  26  sentenciaEjecutable : asignacion
-  27                      | OUT '(' CADENA ')' ';'
-  28                      | OUT '(' error ')' ';'
-  29                      | identificador '(' nombres ')' ';'
-  30                      | identificador '(' ')' ';'
-  31                      | identificador '(' error ')' ';'
-  32                      | IF cuerpoIf
-  33                      | cicloFor
+  27  sentenciaEjecutable : asignacion ';'
+  28                      | OUT '(' CADENA ')' ';'
+  29                      | OUT '(' error ')' ';'
+  30                      | identificador '(' nombres ')' ';'
+  31                      | identificador '(' ')' ';'
+  32                      | identificador '(' error ')' ';'
+  33                      | IF cuerpoIf
+  34                      | cicloFor
 
-  34  cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia '}'
+  35  cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia '}'
 
-  35  condicionFor : inicioFor ';' condiFOR ';' incDec
+  36  condicionFor : inicioFor ';' condiFOR ';' incDec
 
-  36  condiFOR : condicion
+  37  condiFOR : condicion
 
-  37  inicioFor : identificador '=' constante
+  38  inicioFor : identificador '=' constante
 
-  38  condicion : identificador comparador asignacion
-  39            | identificador comparador identificador
-  40            | identificador comparador constante
+  39  condicion : identificador comparador asignacion
+  40            | identificador comparador identificador
+  41            | identificador comparador constante
 
-  41  incDec : UP constante
-  42         | DOWN constante
-  43         | error constante
+  42  incDec : UP constante
+  43         | DOWN constante
+  44         | error constante
 
-  44  bloqueSentencia : bloqueSentencia sentenciaEjecutable
-  45                  | sentenciaEjecutable
+  45  bloqueSentencia : bloqueSentencia sentenciaEjecutable
+  46                  | sentenciaEjecutable
 
-  46  cuerpoIf : cuerpoCompleto END_IF
-  47           | cuerpoIncompleto END_IF
+  47  cuerpoIf : cuerpoCompleto END_IF
+  48           | cuerpoIncompleto END_IF
 
-  48  cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'
-  49                 | '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}'
-  50                 | '(' condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable
-  51                 | '(' condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable
+  49  cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'
+  50                 | '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}'
+  51                 | '(' condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable
+  52                 | '(' condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable
 
-  52  condicionIf : condicion
+  53  condicionIf : condicion
 
-  53  bloqueThen : bloqueSentencia
+  54  bloqueThen : bloqueSentencia
 
-  54  bloqueElse : bloqueSentencia
+  55  bloqueElse : bloqueSentencia
 
-  55  cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen '}'
-  56                   | '(' condicionIf ')' sentenciaEjecutable
+  56  cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen '}'
+  57                   | '(' condicionIf ')' sentenciaEjecutable
 
-  57  asignacion : identificador '=' expresion ';'
-  58             | error '=' expresion ';'
+  58  asignacion : identificador '=' expresion
+  59             | error '=' expresion
 
-  59  expresion : expresion '+' termino
-  60            | expresion '-' termino
-  61            | termino
+  60  expresion : expresion '+' termino
+  61            | expresion '-' termino
+  62            | termino
 
-  62  termino : termino '*' factor
-  63          | termino '/' factor
-  64          | factor
+  63  termino : termino '*' factor
+  64          | termino '/' factor
+  65          | factor
 
-  65  factor : constante
-  66         | identificador
+  66  factor : constante
+  67         | identificador
 
-  67  comparador : "<="
-  68             | ">="
-  69             | "!="
-  70             | "=="
-  71             | '>'
-  72             | '<'
-  73             | error
+  68  comparador : "<="
+  69             | ">="
+  70             | "!="
+  71             | "=="
+  72             | '>'
+  73             | '<'
+  74             | error
 
-  74  tipo : FLOAT
-  75       | INTEGER
+  75  tipo : FLOAT
+  76       | INTEGER
 
-  76  identificador : ID
+  77  identificador : ID
 
-  77  constante : ctePositiva
-  78            | cteNegativa
+  78  constante : ctePositiva
+  79            | cteNegativa
 
-  79  ctePositiva : CTE
-  80              | error
+  80  ctePositiva : CTE
+  81              | error
 
-  81  cteNegativa : '-' CTE
-  82              | '-' error
+  82  cteNegativa : '-' CTE
+  83              | '-' error
 
 state 0
 	$accept : . programa $end  (0)
@@ -143,20 +144,20 @@ state 0
 
 
 state 1
-	asignacion : error . '=' expresion ';'  (58)
+	asignacion : error . '=' expresion  (59)
 
 	'='  shift 19
 	.  error
 
 
 state 2
-	identificador : ID .  (76)
+	identificador : ID .  (77)
 
-	.  reduce 76
+	.  reduce 77
 
 
 state 3
-	sentenciaEjecutable : IF . cuerpoIf  (32)
+	sentenciaEjecutable : IF . cuerpoIf  (33)
 
 	'('  shift 20
 	.  error
@@ -167,30 +168,30 @@ state 3
 
 
 state 4
-	sentenciaEjecutable : OUT . '(' CADENA ')' ';'  (27)
-	sentenciaEjecutable : OUT . '(' error ')' ';'  (28)
+	sentenciaEjecutable : OUT . '(' CADENA ')' ';'  (28)
+	sentenciaEjecutable : OUT . '(' error ')' ';'  (29)
 
 	'('  shift 24
 	.  error
 
 
 state 5
-	cicloFor : FOR . '(' condicionFor ')' '{' bloqueSentencia '}'  (34)
+	cicloFor : FOR . '(' condicionFor ')' '{' bloqueSentencia '}'  (35)
 
 	'('  shift 25
 	.  error
 
 
 state 6
-	tipo : INTEGER .  (75)
+	tipo : INTEGER .  (76)
 
-	.  reduce 75
+	.  reduce 76
 
 
 state 7
-	tipo : FLOAT .  (74)
+	tipo : FLOAT .  (75)
 
-	.  reduce 74
+	.  reduce 75
 
 
 state 8
@@ -264,10 +265,10 @@ state 14
 
 
 state 15
-	sentenciaEjecutable : identificador . '(' nombres ')' ';'  (29)
-	sentenciaEjecutable : identificador . '(' ')' ';'  (30)
-	sentenciaEjecutable : identificador . '(' error ')' ';'  (31)
-	asignacion : identificador . '=' expresion ';'  (57)
+	sentenciaEjecutable : identificador . '(' nombres ')' ';'  (30)
+	sentenciaEjecutable : identificador . '(' ')' ';'  (31)
+	sentenciaEjecutable : identificador . '(' error ')' ';'  (32)
+	asignacion : identificador . '=' expresion  (58)
 
 	'('  shift 31
 	'='  shift 32
@@ -284,89 +285,90 @@ state 16
 
 
 state 17
-	sentenciaEjecutable : asignacion .  (26)
+	sentenciaEjecutable : asignacion . ';'  (27)
 
-	.  reduce 26
+	';'  shift 35
+	.  error
 
 
 state 18
-	sentenciaEjecutable : cicloFor .  (33)
+	sentenciaEjecutable : cicloFor .  (34)
+
+	.  reduce 34
+
+
+state 19
+	asignacion : error '=' . expresion  (59)
+
+	error  shift 36
+	ID  shift 2
+	CTE  shift 37
+	'-'  shift 38
+	.  error
+
+	identificador  goto 39
+	constante  goto 40
+	expresion  goto 41
+	termino  goto 42
+	factor  goto 43
+	ctePositiva  goto 44
+	cteNegativa  goto 45
+
+
+state 20
+	cuerpoCompleto : '(' . condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'  (49)
+	cuerpoCompleto : '(' . condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}'  (50)
+	cuerpoCompleto : '(' . condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable  (51)
+	cuerpoCompleto : '(' . condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable  (52)
+	cuerpoIncompleto : '(' . condicionIf ')' '{' bloqueThen '}'  (56)
+	cuerpoIncompleto : '(' . condicionIf ')' sentenciaEjecutable  (57)
+
+	ID  shift 2
+	.  error
+
+	identificador  goto 46
+	condicion  goto 47
+	condicionIf  goto 48
+
+
+state 21
+	sentenciaEjecutable : IF cuerpoIf .  (33)
 
 	.  reduce 33
 
 
-state 19
-	asignacion : error '=' . expresion ';'  (58)
-
-	error  shift 35
-	ID  shift 2
-	CTE  shift 36
-	'-'  shift 37
-	.  error
-
-	identificador  goto 38
-	constante  goto 39
-	expresion  goto 40
-	termino  goto 41
-	factor  goto 42
-	ctePositiva  goto 43
-	cteNegativa  goto 44
-
-
-state 20
-	cuerpoCompleto : '(' . condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'  (48)
-	cuerpoCompleto : '(' . condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}'  (49)
-	cuerpoCompleto : '(' . condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable  (50)
-	cuerpoCompleto : '(' . condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable  (51)
-	cuerpoIncompleto : '(' . condicionIf ')' '{' bloqueThen '}'  (55)
-	cuerpoIncompleto : '(' . condicionIf ')' sentenciaEjecutable  (56)
-
-	ID  shift 2
-	.  error
-
-	identificador  goto 45
-	condicion  goto 46
-	condicionIf  goto 47
-
-
-state 21
-	sentenciaEjecutable : IF cuerpoIf .  (32)
-
-	.  reduce 32
-
-
 state 22
-	cuerpoIf : cuerpoCompleto . END_IF  (46)
-
-	END_IF  shift 48
-	.  error
-
-
-state 23
-	cuerpoIf : cuerpoIncompleto . END_IF  (47)
+	cuerpoIf : cuerpoCompleto . END_IF  (47)
 
 	END_IF  shift 49
 	.  error
 
 
-state 24
-	sentenciaEjecutable : OUT '(' . CADENA ')' ';'  (27)
-	sentenciaEjecutable : OUT '(' . error ')' ';'  (28)
+state 23
+	cuerpoIf : cuerpoIncompleto . END_IF  (48)
 
-	error  shift 50
-	CADENA  shift 51
+	END_IF  shift 50
+	.  error
+
+
+state 24
+	sentenciaEjecutable : OUT '(' . CADENA ')' ';'  (28)
+	sentenciaEjecutable : OUT '(' . error ')' ';'  (29)
+
+	error  shift 51
+	CADENA  shift 52
 	.  error
 
 
 state 25
-	cicloFor : FOR '(' . condicionFor ')' '{' bloqueSentencia '}'  (34)
+	cicloFor : FOR '(' . condicionFor ')' '{' bloqueSentencia '}'  (35)
 
 	ID  shift 2
 	.  error
 
-	identificador  goto 52
-	condicionFor  goto 53
-	inicioFor  goto 54
+	identificador  goto 53
+	condicionFor  goto 54
+	inicioFor  goto 55
 
 
 state 26
@@ -374,7 +376,7 @@ state 26
 	encabezadoProc : PROC identificador . '(' ')' NA '=' CTE ',' NS '=' CTE  (12)
 	encabezadoProc : PROC identificador . '(' error ')' NA '=' CTE ',' NS '=' CTE  (13)
 
-	'('  shift 55
+	'('  shift 56
 	.  error
 
 
@@ -394,8 +396,8 @@ state 29
 	sentenciaDeclarativa : tipo listaVariables . ';'  (6)
 	listaVariables : listaVariables . ',' identificador  (8)
 
-	';'  shift 56
-	','  shift 57
+	';'  shift 57
+	','  shift 58
 	.  error
 
 
@@ -406,41 +408,41 @@ state 30
 
 
 state 31
-	sentenciaEjecutable : identificador '(' . nombres ')' ';'  (29)
-	sentenciaEjecutable : identificador '(' . ')' ';'  (30)
-	sentenciaEjecutable : identificador '(' . error ')' ';'  (31)
+	sentenciaEjecutable : identificador '(' . nombres ')' ';'  (30)
+	sentenciaEjecutable : identificador '(' . ')' ';'  (31)
+	sentenciaEjecutable : identificador '(' . error ')' ';'  (32)
 
-	error  shift 58
+	error  shift 59
 	ID  shift 2
-	')'  shift 59
+	')'  shift 60
 	.  error
 
-	identificador  goto 60
-	nombres  goto 61
+	identificador  goto 61
+	nombres  goto 62
 
 
 state 32
-	asignacion : identificador '=' . expresion ';'  (57)
+	asignacion : identificador '=' . expresion  (58)
 
-	error  shift 35
+	error  shift 36
 	ID  shift 2
-	CTE  shift 36
-	'-'  shift 37
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
-	identificador  goto 38
-	constante  goto 39
-	expresion  goto 62
-	termino  goto 41
-	factor  goto 42
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	identificador  goto 39
+	constante  goto 40
+	expresion  goto 63
+	termino  goto 42
+	factor  goto 43
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 33
 	bloqueProc : '{' . bloque '}'  (21)
 
-	error  shift 1
+	error  shift 64
 	ID  shift 2
 	IF  shift 3
 	OUT  shift 4
@@ -450,13 +452,13 @@ state 33
 	PROC  shift 8
 	.  error
 
-	sentenciaDeclarativa  goto 63
-	sentenciaEjecutable  goto 64
+	sentenciaDeclarativa  goto 65
+	sentenciaEjecutable  goto 66
 	tipo  goto 13
 	declaracionProcedimiento  goto 14
 	identificador  goto 15
 	encabezadoProc  goto 16
-	bloque  goto 65
+	bloque  goto 67
 	asignacion  goto 17
 	cicloFor  goto 18
 
@@ -468,246 +470,269 @@ state 34
 
 
 state 35
-	ctePositiva : error .  (80)
+	sentenciaEjecutable : asignacion ';' .  (27)
+
+	.  reduce 27
+
+
+state 36
+	ctePositiva : error .  (81)
+
+	.  reduce 81
+
+
+state 37
+	ctePositiva : CTE .  (80)
 
 	.  reduce 80
 
 
-state 36
-	ctePositiva : CTE .  (79)
+state 38
+	cteNegativa : '-' . CTE  (82)
+	cteNegativa : '-' . error  (83)
 
-	.  reduce 79
-
-
-state 37
-	cteNegativa : '-' . CTE  (81)
-	cteNegativa : '-' . error  (82)
-
-	error  shift 66
-	CTE  shift 67
+	error  shift 68
+	CTE  shift 69
 	.  error
 
 
-state 38
-	factor : identificador .  (66)
+state 39
+	factor : identificador .  (67)
+
+	.  reduce 67
+
+
+state 40
+	factor : constante .  (66)
 
 	.  reduce 66
 
 
-state 39
-	factor : constante .  (65)
+state 41
+	asignacion : error '=' expresion .  (59)
+	expresion : expresion . '+' termino  (60)
+	expresion : expresion . '-' termino  (61)
+
+	'+'  shift 70
+	'-'  shift 71
+	';'  reduce 59
+	')'  reduce 59
+
+
+state 42
+	expresion : termino .  (62)
+	termino : termino . '*' factor  (63)
+	termino : termino . '/' factor  (64)
+
+	'*'  shift 72
+	'/'  shift 73
+	'+'  reduce 62
+	'-'  reduce 62
+	';'  reduce 62
+	')'  reduce 62
+
+
+state 43
+	termino : factor .  (65)
 
 	.  reduce 65
 
 
-state 40
-	asignacion : error '=' expresion . ';'  (58)
-	expresion : expresion . '+' termino  (59)
-	expresion : expresion . '-' termino  (60)
-
-	'+'  shift 68
-	'-'  shift 69
-	';'  shift 70
-	.  error
-
-
-state 41
-	expresion : termino .  (61)
-	termino : termino . '*' factor  (62)
-	termino : termino . '/' factor  (63)
-
-	'*'  shift 71
-	'/'  shift 72
-	'+'  reduce 61
-	'-'  reduce 61
-	';'  reduce 61
-
-
-state 42
-	termino : factor .  (64)
-
-	.  reduce 64
-
-
-state 43
-	constante : ctePositiva .  (77)
-
-	.  reduce 77
-
-
 state 44
-	constante : cteNegativa .  (78)
+	constante : ctePositiva .  (78)
 
 	.  reduce 78
 
 
 state 45
-	condicion : identificador . comparador asignacion  (38)
-	condicion : identificador . comparador identificador  (39)
-	condicion : identificador . comparador constante  (40)
+	constante : cteNegativa .  (79)
 
-	error  shift 73
-	"<="  shift 74
-	">="  shift 75
-	"!="  shift 76
-	"=="  shift 77
-	'>'  shift 78
-	'<'  shift 79
-	.  error
-
-	comparador  goto 80
+	.  reduce 79
 
 
 state 46
-	condicionIf : condicion .  (52)
+	condicion : identificador . comparador asignacion  (39)
+	condicion : identificador . comparador identificador  (40)
+	condicion : identificador . comparador constante  (41)
 
-	.  reduce 52
+	error  shift 74
+	"<="  shift 75
+	">="  shift 76
+	"!="  shift 77
+	"=="  shift 78
+	'>'  shift 79
+	'<'  shift 80
+	.  error
+
+	comparador  goto 81
 
 
 state 47
-	cuerpoCompleto : '(' condicionIf . ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'  (48)
-	cuerpoCompleto : '(' condicionIf . ')' sentenciaEjecutable ELSE '{' bloqueElse '}'  (49)
-	cuerpoCompleto : '(' condicionIf . ')' '{' bloqueThen '}' ELSE sentenciaEjecutable  (50)
-	cuerpoCompleto : '(' condicionIf . ')' sentenciaEjecutable ELSE sentenciaEjecutable  (51)
-	cuerpoIncompleto : '(' condicionIf . ')' '{' bloqueThen '}'  (55)
-	cuerpoIncompleto : '(' condicionIf . ')' sentenciaEjecutable  (56)
+	condicionIf : condicion .  (53)
 
-	')'  shift 81
-	.  error
+	.  reduce 53
 
 
 state 48
-	cuerpoIf : cuerpoCompleto END_IF .  (46)
-
-	.  reduce 46
-
-
-state 49
-	cuerpoIf : cuerpoIncompleto END_IF .  (47)
-
-	.  reduce 47
-
-
-state 50
-	sentenciaEjecutable : OUT '(' error . ')' ';'  (28)
+	cuerpoCompleto : '(' condicionIf . ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}'  (49)
+	cuerpoCompleto : '(' condicionIf . ')' sentenciaEjecutable ELSE '{' bloqueElse '}'  (50)
+	cuerpoCompleto : '(' condicionIf . ')' '{' bloqueThen '}' ELSE sentenciaEjecutable  (51)
+	cuerpoCompleto : '(' condicionIf . ')' sentenciaEjecutable ELSE sentenciaEjecutable  (52)
+	cuerpoIncompleto : '(' condicionIf . ')' '{' bloqueThen '}'  (56)
+	cuerpoIncompleto : '(' condicionIf . ')' sentenciaEjecutable  (57)
 
 	')'  shift 82
 	.  error
 
 
+state 49
+	cuerpoIf : cuerpoCompleto END_IF .  (47)
+
+	.  reduce 47
+
+
+state 50
+	cuerpoIf : cuerpoIncompleto END_IF .  (48)
+
+	.  reduce 48
+
+
 state 51
-	sentenciaEjecutable : OUT '(' CADENA . ')' ';'  (27)
+	sentenciaEjecutable : OUT '(' error . ')' ';'  (29)
 
 	')'  shift 83
 	.  error
 
 
 state 52
-	inicioFor : identificador . '=' constante  (37)
+	sentenciaEjecutable : OUT '(' CADENA . ')' ';'  (28)
 
-	'='  shift 84
+	')'  shift 84
 	.  error
 
 
 state 53
-	cicloFor : FOR '(' condicionFor . ')' '{' bloqueSentencia '}'  (34)
+	inicioFor : identificador . '=' constante  (38)
 
-	')'  shift 85
+	'='  shift 85
 	.  error
 
 
 state 54
-	condicionFor : inicioFor . ';' condiFOR ';' incDec  (35)
+	cicloFor : FOR '(' condicionFor . ')' '{' bloqueSentencia '}'  (35)
 
-	';'  shift 86
+	')'  shift 86
 	.  error
 
 
 state 55
+	condicionFor : inicioFor . ';' condiFOR ';' incDec  (36)
+
+	';'  shift 87
+	.  error
+
+
+state 56
 	encabezadoProc : PROC identificador '(' . parametrosProc ')' NA '=' CTE ',' NS '=' CTE  (11)
 	encabezadoProc : PROC identificador '(' . ')' NA '=' CTE ',' NS '=' CTE  (12)
 	encabezadoProc : PROC identificador '(' . error ')' NA '=' CTE ',' NS '=' CTE  (13)
 
-	error  shift 87
+	error  shift 88
 	INTEGER  shift 6
 	FLOAT  shift 7
-	')'  shift 88
+	')'  shift 89
 	.  error
 
-	tipo  goto 89
-	parametrosProc  goto 90
-	parametro  goto 91
+	tipo  goto 90
+	parametrosProc  goto 91
+	parametro  goto 92
 
 
-state 56
+state 57
 	sentenciaDeclarativa : tipo listaVariables ';' .  (6)
 
 	.  reduce 6
 
 
-state 57
+state 58
 	listaVariables : listaVariables ',' . identificador  (8)
 
 	ID  shift 2
 	.  error
 
-	identificador  goto 92
-
-
-state 58
-	sentenciaEjecutable : identificador '(' error . ')' ';'  (31)
-
-	')'  shift 93
-	.  error
+	identificador  goto 93
 
 
 state 59
-	sentenciaEjecutable : identificador '(' ')' . ';'  (30)
+	sentenciaEjecutable : identificador '(' error . ')' ';'  (32)
 
-	';'  shift 94
+	')'  shift 94
 	.  error
 
 
 state 60
+	sentenciaEjecutable : identificador '(' ')' . ';'  (31)
+
+	';'  shift 95
+	.  error
+
+
+state 61
 	nombres : identificador .  (14)
 	nombres : identificador . ',' identificador  (15)
 	nombres : identificador . ',' identificador ',' identificador  (16)
 
-	','  shift 95
+	','  shift 96
 	')'  reduce 14
 
 
-state 61
-	sentenciaEjecutable : identificador '(' nombres . ')' ';'  (29)
-
-	')'  shift 96
-	.  error
-
-
 state 62
-	asignacion : identificador '=' expresion . ';'  (57)
-	expresion : expresion . '+' termino  (59)
-	expresion : expresion . '-' termino  (60)
+	sentenciaEjecutable : identificador '(' nombres . ')' ';'  (30)
 
-	'+'  shift 68
-	'-'  shift 69
-	';'  shift 97
+	')'  shift 97
 	.  error
 
 
 state 63
+	asignacion : identificador '=' expresion .  (58)
+	expresion : expresion . '+' termino  (60)
+	expresion : expresion . '-' termino  (61)
+
+	'+'  shift 70
+	'-'  shift 71
+	';'  reduce 58
+	')'  reduce 58
+
+
+state 64
+	bloque : error .  (26)
+	asignacion : error . '=' expresion  (59)
+
+	'='  shift 19
+	error  reduce 26
+	ID  reduce 26
+	IF  reduce 26
+	OUT  reduce 26
+	FOR  reduce 26
+	INTEGER  reduce 26
+	FLOAT  reduce 26
+	PROC  reduce 26
+	'}'  reduce 26
+
+
+state 65
 	bloque : sentenciaDeclarativa .  (24)
 
 	.  reduce 24
 
 
-state 64
+state 66
 	bloque : sentenciaEjecutable .  (25)
 
 	.  reduce 25
 
 
-state 65
+state 67
 	bloqueProc : '{' bloque . '}'  (21)
 	bloque : bloque . sentenciaDeclarativa  (22)
 	bloque : bloque . sentenciaEjecutable  (23)
@@ -733,157 +758,151 @@ state 65
 	cicloFor  goto 18
 
 
-state 66
-	cteNegativa : '-' error .  (82)
+state 68
+	cteNegativa : '-' error .  (83)
+
+	.  reduce 83
+
+
+state 69
+	cteNegativa : '-' CTE .  (82)
 
 	.  reduce 82
 
 
-state 67
-	cteNegativa : '-' CTE .  (81)
-
-	.  reduce 81
-
-
-state 68
-	expresion : expresion '+' . termino  (59)
-
-	error  shift 35
-	ID  shift 2
-	CTE  shift 36
-	'-'  shift 37
-	.  error
-
-	identificador  goto 38
-	constante  goto 39
-	termino  goto 101
-	factor  goto 42
-	ctePositiva  goto 43
-	cteNegativa  goto 44
-
-
-state 69
-	expresion : expresion '-' . termino  (60)
-
-	error  shift 35
-	ID  shift 2
-	CTE  shift 36
-	'-'  shift 37
-	.  error
-
-	identificador  goto 38
-	constante  goto 39
-	termino  goto 102
-	factor  goto 42
-	ctePositiva  goto 43
-	cteNegativa  goto 44
-
-
 state 70
-	asignacion : error '=' expresion ';' .  (58)
+	expresion : expresion '+' . termino  (60)
 
-	.  reduce 58
+	error  shift 36
+	ID  shift 2
+	CTE  shift 37
+	'-'  shift 38
+	.  error
+
+	identificador  goto 39
+	constante  goto 40
+	termino  goto 101
+	factor  goto 43
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 71
-	termino : termino '*' . factor  (62)
+	expresion : expresion '-' . termino  (61)
 
-	error  shift 35
+	error  shift 36
 	ID  shift 2
-	CTE  shift 36
-	'-'  shift 37
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
-	identificador  goto 38
-	constante  goto 39
-	factor  goto 103
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	identificador  goto 39
+	constante  goto 40
+	termino  goto 102
+	factor  goto 43
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 72
-	termino : termino '/' . factor  (63)
+	termino : termino '*' . factor  (63)
 
-	error  shift 35
+	error  shift 36
 	ID  shift 2
-	CTE  shift 36
-	'-'  shift 37
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
-	identificador  goto 38
-	constante  goto 39
-	factor  goto 104
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	identificador  goto 39
+	constante  goto 40
+	factor  goto 103
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 73
-	comparador : error .  (73)
+	termino : termino '/' . factor  (64)
 
-	.  reduce 73
+	error  shift 36
+	ID  shift 2
+	CTE  shift 37
+	'-'  shift 38
+	.  error
+
+	identificador  goto 39
+	constante  goto 40
+	factor  goto 104
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 74
-	comparador : "<=" .  (67)
+	comparador : error .  (74)
 
-	.  reduce 67
+	.  reduce 74
 
 
 state 75
-	comparador : ">=" .  (68)
+	comparador : "<=" .  (68)
 
 	.  reduce 68
 
 
 state 76
-	comparador : "!=" .  (69)
+	comparador : ">=" .  (69)
 
 	.  reduce 69
 
 
 state 77
-	comparador : "==" .  (70)
+	comparador : "!=" .  (70)
 
 	.  reduce 70
 
 
 state 78
-	comparador : '>' .  (71)
+	comparador : "==" .  (71)
 
 	.  reduce 71
 
 
 state 79
-	comparador : '<' .  (72)
+	comparador : '>' .  (72)
 
 	.  reduce 72
 
 
 state 80
-	condicion : identificador comparador . asignacion  (38)
-	condicion : identificador comparador . identificador  (39)
-	condicion : identificador comparador . constante  (40)
+	comparador : '<' .  (73)
+
+	.  reduce 73
+
+
+state 81
+	condicion : identificador comparador . asignacion  (39)
+	condicion : identificador comparador . identificador  (40)
+	condicion : identificador comparador . constante  (41)
 
 	error  shift 105
 	ID  shift 2
-	CTE  shift 36
-	'-'  shift 37
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
 	identificador  goto 106
 	asignacion  goto 107
 	constante  goto 108
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
-state 81
-	cuerpoCompleto : '(' condicionIf ')' . '{' bloqueThen '}' ELSE '{' bloqueElse '}'  (48)
-	cuerpoCompleto : '(' condicionIf ')' . sentenciaEjecutable ELSE '{' bloqueElse '}'  (49)
-	cuerpoCompleto : '(' condicionIf ')' . '{' bloqueThen '}' ELSE sentenciaEjecutable  (50)
-	cuerpoCompleto : '(' condicionIf ')' . sentenciaEjecutable ELSE sentenciaEjecutable  (51)
-	cuerpoIncompleto : '(' condicionIf ')' . '{' bloqueThen '}'  (55)
-	cuerpoIncompleto : '(' condicionIf ')' . sentenciaEjecutable  (56)
+state 82
+	cuerpoCompleto : '(' condicionIf ')' . '{' bloqueThen '}' ELSE '{' bloqueElse '}'  (49)
+	cuerpoCompleto : '(' condicionIf ')' . sentenciaEjecutable ELSE '{' bloqueElse '}'  (50)
+	cuerpoCompleto : '(' condicionIf ')' . '{' bloqueThen '}' ELSE sentenciaEjecutable  (51)
+	cuerpoCompleto : '(' condicionIf ')' . sentenciaEjecutable ELSE sentenciaEjecutable  (52)
+	cuerpoIncompleto : '(' condicionIf ')' . '{' bloqueThen '}'  (56)
+	cuerpoIncompleto : '(' condicionIf ')' . sentenciaEjecutable  (57)
 
 	error  shift 1
 	ID  shift 2
@@ -899,66 +918,66 @@ state 81
 	cicloFor  goto 18
 
 
-state 82
-	sentenciaEjecutable : OUT '(' error ')' . ';'  (28)
+state 83
+	sentenciaEjecutable : OUT '(' error ')' . ';'  (29)
 
 	';'  shift 111
 	.  error
 
 
-state 83
-	sentenciaEjecutable : OUT '(' CADENA ')' . ';'  (27)
+state 84
+	sentenciaEjecutable : OUT '(' CADENA ')' . ';'  (28)
 
 	';'  shift 112
 	.  error
 
 
-state 84
-	inicioFor : identificador '=' . constante  (37)
+state 85
+	inicioFor : identificador '=' . constante  (38)
 
-	error  shift 35
-	CTE  shift 36
-	'-'  shift 37
+	error  shift 36
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
 	constante  goto 113
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
-state 85
-	cicloFor : FOR '(' condicionFor ')' . '{' bloqueSentencia '}'  (34)
+state 86
+	cicloFor : FOR '(' condicionFor ')' . '{' bloqueSentencia '}'  (35)
 
 	'{'  shift 114
 	.  error
 
 
-state 86
-	condicionFor : inicioFor ';' . condiFOR ';' incDec  (35)
+state 87
+	condicionFor : inicioFor ';' . condiFOR ';' incDec  (36)
 
 	ID  shift 2
 	.  error
 
-	identificador  goto 45
+	identificador  goto 46
 	condiFOR  goto 115
 	condicion  goto 116
 
 
-state 87
+state 88
 	encabezadoProc : PROC identificador '(' error . ')' NA '=' CTE ',' NS '=' CTE  (13)
 
 	')'  shift 117
 	.  error
 
 
-state 88
+state 89
 	encabezadoProc : PROC identificador '(' ')' . NA '=' CTE ',' NS '=' CTE  (12)
 
 	NA  shift 118
 	.  error
 
 
-state 89
+state 90
 	parametro : tipo . identificador  (20)
 
 	ID  shift 2
@@ -967,14 +986,14 @@ state 89
 	identificador  goto 119
 
 
-state 90
+state 91
 	encabezadoProc : PROC identificador '(' parametrosProc . ')' NA '=' CTE ',' NS '=' CTE  (11)
 
 	')'  shift 120
 	.  error
 
 
-state 91
+state 92
 	parametrosProc : parametro .  (17)
 	parametrosProc : parametro . ',' parametro  (18)
 	parametrosProc : parametro . ',' parametro ',' parametro  (19)
@@ -983,26 +1002,26 @@ state 91
 	')'  reduce 17
 
 
-state 92
+state 93
 	listaVariables : listaVariables ',' identificador .  (8)
 
 	.  reduce 8
 
 
-state 93
-	sentenciaEjecutable : identificador '(' error ')' . ';'  (31)
+state 94
+	sentenciaEjecutable : identificador '(' error ')' . ';'  (32)
 
 	';'  shift 122
 	.  error
 
 
-state 94
-	sentenciaEjecutable : identificador '(' ')' ';' .  (30)
-
-	.  reduce 30
-
-
 state 95
+	sentenciaEjecutable : identificador '(' ')' ';' .  (31)
+
+	.  reduce 31
+
+
+state 96
 	nombres : identificador ',' . identificador  (15)
 	nombres : identificador ',' . identificador ',' identificador  (16)
 
@@ -1012,17 +1031,11 @@ state 95
 	identificador  goto 123
 
 
-state 96
-	sentenciaEjecutable : identificador '(' nombres ')' . ';'  (29)
+state 97
+	sentenciaEjecutable : identificador '(' nombres ')' . ';'  (30)
 
 	';'  shift 124
 	.  error
-
-
-state 97
-	asignacion : identificador '=' expresion ';' .  (57)
-
-	.  reduce 57
 
 
 state 98
@@ -1044,75 +1057,77 @@ state 100
 
 
 state 101
-	expresion : expresion '+' termino .  (59)
-	termino : termino . '*' factor  (62)
-	termino : termino . '/' factor  (63)
+	expresion : expresion '+' termino .  (60)
+	termino : termino . '*' factor  (63)
+	termino : termino . '/' factor  (64)
 
-	'*'  shift 71
-	'/'  shift 72
-	'+'  reduce 59
-	'-'  reduce 59
-	';'  reduce 59
-
-
-state 102
-	expresion : expresion '-' termino .  (60)
-	termino : termino . '*' factor  (62)
-	termino : termino . '/' factor  (63)
-
-	'*'  shift 71
-	'/'  shift 72
+	'*'  shift 72
+	'/'  shift 73
 	'+'  reduce 60
 	'-'  reduce 60
 	';'  reduce 60
+	')'  reduce 60
+
+
+state 102
+	expresion : expresion '-' termino .  (61)
+	termino : termino . '*' factor  (63)
+	termino : termino . '/' factor  (64)
+
+	'*'  shift 72
+	'/'  shift 73
+	'+'  reduce 61
+	'-'  reduce 61
+	';'  reduce 61
+	')'  reduce 61
 
 
 state 103
-	termino : termino '*' factor .  (62)
-
-	.  reduce 62
-
-
-state 104
-	termino : termino '/' factor .  (63)
+	termino : termino '*' factor .  (63)
 
 	.  reduce 63
 
 
+state 104
+	termino : termino '/' factor .  (64)
+
+	.  reduce 64
+
+
 state 105
-	asignacion : error . '=' expresion ';'  (58)
-	ctePositiva : error .  (80)
+	asignacion : error . '=' expresion  (59)
+	ctePositiva : error .  (81)
 
 	'='  shift 19
-	';'  reduce 80
-	')'  reduce 80
+	';'  reduce 81
+	')'  reduce 81
 
 
 state 106
-	condicion : identificador comparador identificador .  (39)
-	asignacion : identificador . '=' expresion ';'  (57)
+	condicion : identificador comparador identificador .  (40)
+	asignacion : identificador . '=' expresion  (58)
 
 	'='  shift 32
-	';'  reduce 39
-	')'  reduce 39
+	';'  reduce 40
+	')'  reduce 40
 
 
 state 107
-	condicion : identificador comparador asignacion .  (38)
+	condicion : identificador comparador asignacion .  (39)
 
-	.  reduce 38
+	.  reduce 39
 
 
 state 108
-	condicion : identificador comparador constante .  (40)
+	condicion : identificador comparador constante .  (41)
 
-	.  reduce 40
+	.  reduce 41
 
 
 state 109
-	cuerpoCompleto : '(' condicionIf ')' '{' . bloqueThen '}' ELSE '{' bloqueElse '}'  (48)
-	cuerpoCompleto : '(' condicionIf ')' '{' . bloqueThen '}' ELSE sentenciaEjecutable  (50)
-	cuerpoIncompleto : '(' condicionIf ')' '{' . bloqueThen '}'  (55)
+	cuerpoCompleto : '(' condicionIf ')' '{' . bloqueThen '}' ELSE '{' bloqueElse '}'  (49)
+	cuerpoCompleto : '(' condicionIf ')' '{' . bloqueThen '}' ELSE sentenciaEjecutable  (51)
+	cuerpoIncompleto : '(' condicionIf ')' '{' . bloqueThen '}'  (56)
 
 	error  shift 1
 	ID  shift 2
@@ -1130,34 +1145,34 @@ state 109
 
 
 state 110
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable . ELSE '{' bloqueElse '}'  (49)
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable . ELSE sentenciaEjecutable  (51)
-	cuerpoIncompleto : '(' condicionIf ')' sentenciaEjecutable .  (56)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable . ELSE '{' bloqueElse '}'  (50)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable . ELSE sentenciaEjecutable  (52)
+	cuerpoIncompleto : '(' condicionIf ')' sentenciaEjecutable .  (57)
 
 	ELSE  shift 128
-	END_IF  reduce 56
+	END_IF  reduce 57
 
 
 state 111
-	sentenciaEjecutable : OUT '(' error ')' ';' .  (28)
+	sentenciaEjecutable : OUT '(' error ')' ';' .  (29)
+
+	.  reduce 29
+
+
+state 112
+	sentenciaEjecutable : OUT '(' CADENA ')' ';' .  (28)
 
 	.  reduce 28
 
 
-state 112
-	sentenciaEjecutable : OUT '(' CADENA ')' ';' .  (27)
-
-	.  reduce 27
-
-
 state 113
-	inicioFor : identificador '=' constante .  (37)
+	inicioFor : identificador '=' constante .  (38)
 
-	.  reduce 37
+	.  reduce 38
 
 
 state 114
-	cicloFor : FOR '(' condicionFor ')' '{' . bloqueSentencia '}'  (34)
+	cicloFor : FOR '(' condicionFor ')' '{' . bloqueSentencia '}'  (35)
 
 	error  shift 1
 	ID  shift 2
@@ -1174,16 +1189,16 @@ state 114
 
 
 state 115
-	condicionFor : inicioFor ';' condiFOR . ';' incDec  (35)
+	condicionFor : inicioFor ';' condiFOR . ';' incDec  (36)
 
 	';'  shift 130
 	.  error
 
 
 state 116
-	condiFOR : condicion .  (36)
+	condiFOR : condicion .  (37)
 
-	.  reduce 36
+	.  reduce 37
 
 
 state 117
@@ -1221,14 +1236,14 @@ state 121
 	FLOAT  shift 7
 	.  error
 
-	tipo  goto 89
+	tipo  goto 90
 	parametro  goto 134
 
 
 state 122
-	sentenciaEjecutable : identificador '(' error ')' ';' .  (31)
+	sentenciaEjecutable : identificador '(' error ')' ';' .  (32)
 
-	.  reduce 31
+	.  reduce 32
 
 
 state 123
@@ -1240,27 +1255,27 @@ state 123
 
 
 state 124
-	sentenciaEjecutable : identificador '(' nombres ')' ';' .  (29)
+	sentenciaEjecutable : identificador '(' nombres ')' ';' .  (30)
 
-	.  reduce 29
+	.  reduce 30
 
 
 state 125
-	bloqueSentencia : sentenciaEjecutable .  (45)
+	bloqueSentencia : sentenciaEjecutable .  (46)
 
-	.  reduce 45
+	.  reduce 46
 
 
 state 126
-	bloqueSentencia : bloqueSentencia . sentenciaEjecutable  (44)
-	bloqueThen : bloqueSentencia .  (53)
+	bloqueSentencia : bloqueSentencia . sentenciaEjecutable  (45)
+	bloqueThen : bloqueSentencia .  (54)
 
 	error  shift 1
 	ID  shift 2
 	IF  shift 3
 	OUT  shift 4
 	FOR  shift 5
-	'}'  reduce 53
+	'}'  reduce 54
 
 	sentenciaEjecutable  goto 136
 	identificador  goto 15
@@ -1269,17 +1284,17 @@ state 126
 
 
 state 127
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen . '}' ELSE '{' bloqueElse '}'  (48)
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen . '}' ELSE sentenciaEjecutable  (50)
-	cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen . '}'  (55)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen . '}' ELSE '{' bloqueElse '}'  (49)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen . '}' ELSE sentenciaEjecutable  (51)
+	cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen . '}'  (56)
 
 	'}'  shift 137
 	.  error
 
 
 state 128
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE . '{' bloqueElse '}'  (49)
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE . sentenciaEjecutable  (51)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE . '{' bloqueElse '}'  (50)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE . sentenciaEjecutable  (52)
 
 	error  shift 1
 	ID  shift 2
@@ -1296,8 +1311,8 @@ state 128
 
 
 state 129
-	cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia . '}'  (34)
-	bloqueSentencia : bloqueSentencia . sentenciaEjecutable  (44)
+	cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia . '}'  (35)
+	bloqueSentencia : bloqueSentencia . sentenciaEjecutable  (45)
 
 	error  shift 1
 	ID  shift 2
@@ -1314,7 +1329,7 @@ state 129
 
 
 state 130
-	condicionFor : inicioFor ';' condiFOR ';' . incDec  (35)
+	condicionFor : inicioFor ';' condiFOR ';' . incDec  (36)
 
 	error  shift 141
 	UP  shift 142
@@ -1363,22 +1378,22 @@ state 135
 
 
 state 136
-	bloqueSentencia : bloqueSentencia sentenciaEjecutable .  (44)
+	bloqueSentencia : bloqueSentencia sentenciaEjecutable .  (45)
 
-	.  reduce 44
+	.  reduce 45
 
 
 state 137
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' . ELSE '{' bloqueElse '}'  (48)
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' . ELSE sentenciaEjecutable  (50)
-	cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen '}' .  (55)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' . ELSE '{' bloqueElse '}'  (49)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' . ELSE sentenciaEjecutable  (51)
+	cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen '}' .  (56)
 
 	ELSE  shift 150
-	END_IF  reduce 55
+	END_IF  reduce 56
 
 
 state 138
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE '{' . bloqueElse '}'  (49)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE '{' . bloqueElse '}'  (50)
 
 	error  shift 1
 	ID  shift 2
@@ -1396,60 +1411,60 @@ state 138
 
 
 state 139
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable .  (51)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE sentenciaEjecutable .  (52)
 
-	.  reduce 51
+	.  reduce 52
 
 
 state 140
-	cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia '}' .  (34)
+	cicloFor : FOR '(' condicionFor ')' '{' bloqueSentencia '}' .  (35)
 
-	.  reduce 34
+	.  reduce 35
 
 
 state 141
-	incDec : error . constante  (43)
+	incDec : error . constante  (44)
 
-	error  shift 35
-	CTE  shift 36
-	'-'  shift 37
+	error  shift 36
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
 	constante  goto 153
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 142
-	incDec : UP . constante  (41)
+	incDec : UP . constante  (42)
 
-	error  shift 35
-	CTE  shift 36
-	'-'  shift 37
+	error  shift 36
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
 	constante  goto 154
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 143
-	incDec : DOWN . constante  (42)
+	incDec : DOWN . constante  (43)
 
-	error  shift 35
-	CTE  shift 36
-	'-'  shift 37
+	error  shift 36
+	CTE  shift 37
+	'-'  shift 38
 	.  error
 
 	constante  goto 155
-	ctePositiva  goto 43
-	cteNegativa  goto 44
+	ctePositiva  goto 44
+	cteNegativa  goto 45
 
 
 state 144
-	condicionFor : inicioFor ';' condiFOR ';' incDec .  (35)
+	condicionFor : inicioFor ';' condiFOR ';' incDec .  (36)
 
-	.  reduce 35
+	.  reduce 36
 
 
 state 145
@@ -1480,7 +1495,7 @@ state 148
 	FLOAT  shift 7
 	.  error
 
-	tipo  goto 89
+	tipo  goto 90
 	parametro  goto 159
 
 
@@ -1491,8 +1506,8 @@ state 149
 
 
 state 150
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE . '{' bloqueElse '}'  (48)
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE . sentenciaEjecutable  (50)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE . '{' bloqueElse '}'  (49)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE . sentenciaEjecutable  (51)
 
 	error  shift 1
 	ID  shift 2
@@ -1509,15 +1524,15 @@ state 150
 
 
 state 151
-	bloqueSentencia : bloqueSentencia . sentenciaEjecutable  (44)
-	bloqueElse : bloqueSentencia .  (54)
+	bloqueSentencia : bloqueSentencia . sentenciaEjecutable  (45)
+	bloqueElse : bloqueSentencia .  (55)
 
 	error  shift 1
 	ID  shift 2
 	IF  shift 3
 	OUT  shift 4
 	FOR  shift 5
-	'}'  reduce 54
+	'}'  reduce 55
 
 	sentenciaEjecutable  goto 136
 	identificador  goto 15
@@ -1526,28 +1541,28 @@ state 151
 
 
 state 152
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse . '}'  (49)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse . '}'  (50)
 
 	'}'  shift 162
 	.  error
 
 
 state 153
-	incDec : error constante .  (43)
+	incDec : error constante .  (44)
 
-	.  reduce 43
+	.  reduce 44
 
 
 state 154
-	incDec : UP constante .  (41)
+	incDec : UP constante .  (42)
 
-	.  reduce 41
+	.  reduce 42
 
 
 state 155
-	incDec : DOWN constante .  (42)
+	incDec : DOWN constante .  (43)
 
-	.  reduce 42
+	.  reduce 43
 
 
 state 156
@@ -1578,7 +1593,7 @@ state 159
 
 
 state 160
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' . bloqueElse '}'  (48)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' . bloqueElse '}'  (49)
 
 	error  shift 1
 	ID  shift 2
@@ -1596,15 +1611,15 @@ state 160
 
 
 state 161
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable .  (50)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE sentenciaEjecutable .  (51)
 
-	.  reduce 50
+	.  reduce 51
 
 
 state 162
-	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}' .  (49)
+	cuerpoCompleto : '(' condicionIf ')' sentenciaEjecutable ELSE '{' bloqueElse '}' .  (50)
 
-	.  reduce 49
+	.  reduce 50
 
 
 state 163
@@ -1629,7 +1644,7 @@ state 165
 
 
 state 166
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse . '}'  (48)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse . '}'  (49)
 
 	'}'  shift 170
 	.  error
@@ -1657,9 +1672,9 @@ state 169
 
 
 state 170
-	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}' .  (48)
+	cuerpoCompleto : '(' condicionIf ')' '{' bloqueThen '}' ELSE '{' bloqueElse '}' .  (49)
 
-	.  reduce 48
+	.  reduce 49
 
 
 state 171
@@ -1695,4 +1710,4 @@ state 175
 
 
 37 terminals, 36 nonterminals
-83 grammar rules, 176 states
+84 grammar rules, 176 states

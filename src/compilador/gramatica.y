@@ -126,9 +126,13 @@ bloque : bloque sentenciaDeclarativa
        | sentenciaEjecutable
 {
 }
+	   | error
+{
+	yyerror("Error: caracteres invalidos, en linea nro: "+ compilador.Compilador.nroLinea);
+}
        ;
 
-sentenciaEjecutable : asignacion
+sentenciaEjecutable : asignacion ';'
 {
 }
 					| OUT '(' CADENA ')' ';'
@@ -276,11 +280,11 @@ cuerpoIncompleto : '(' condicionIf ')' '{' bloqueThen '}'
 }
 				 ;
 
-asignacion : identificador '=' expresion ';'
+asignacion : identificador '=' expresion
 {
 	mostrarMensaje("Token " + $2.sval + ", en linea " + compilador.Compilador.nroLinea);
 }
-		   | error '=' expresion ';'
+		   | error '=' expresion
 {
 	yyerror("Error: identificador mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
 }
