@@ -2,6 +2,7 @@
 
 /*  Tabla de Simbolos  */
 
+<<<<<<< HEAD
 Clave: e	 Value: e
 Clave: d	 Value: d
 Clave: z	 Value: z
@@ -11,3 +12,6 @@ Clave: b	 Value: b
 Clave: a	 Value: a
 Clave: 2	 Value: 2
 Clave: 1	 Value: 1
+=======
+Clave: id_integer	 Value: id_integer
+>>>>>>> 0cc46f8ef7a9fc9410d1712bf934c1dec019476a

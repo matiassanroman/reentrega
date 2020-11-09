@@ -6,6 +6,7 @@ public class AS12_Error extends AccionSemantica{
 	// Accion semantica que detecta caracters invalidos
 	// en ese caso retorna codigo de error -2
 	public int execute(StringBuffer buffer, char c) {
+		//System.out.println("HOLAAA");
 		buffer.delete(0, buffer.length());
 		return -2;
 	}

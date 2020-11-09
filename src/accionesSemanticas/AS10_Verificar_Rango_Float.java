@@ -31,7 +31,10 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 		Simbolo s;
 		if (numero.contains("f")) {
 			flotante = Double.parseDouble(numero.replace('f', 'E'));
-			s = new Simbolo(String.valueOf(flotante));
+			if(String.valueOf(flotante).contains("E"))
+				s = new Simbolo(String.valueOf(flotante).replace('E', 'f'));
+			else
+				s = new Simbolo(String.valueOf(normalizar(flotante)));
 		}
 		else {
 			flotante = Double.parseDouble(numero);
@@ -48,38 +51,47 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 	}
 
 	public static String normalizar(Double numero) {
-		System.out.println("NUMERO: " + numero);
 		int contador = 0;
 		String aux = "";
 		String union = "";
         String [] division = numero.toString().split("\\."); 
-        if(Integer.valueOf(division[0]) > 1)
-		    for(int i=1; i<division[0].length(); i++){
+        
+        //Caso de 0.0
+        if(numero.equals(0.0))
+        	return String.valueOf(numero);
+        //Caso de 1.051
+        if(Integer.valueOf(division[0]) >= 1 && Integer.valueOf(division[0]) <= 9) {
+		    return String.valueOf(numero).replace('E', 'f');
+        }
+        // Caso de 100.001
+        else if(Integer.valueOf(division[0]) > 9) {
+        	 for(int i=1; i<division[0].length(); i++){
 		         aux = aux + String.valueOf(division[0].charAt(i));
 		         contador++;
-		     }
+		     } 
+        	 return String.valueOf(division[0].charAt(0)) + "." + aux + "f+" + contador;  
+        }
+        //Caso de 0.0001050
         else {
-        	int j=1;
+        	int j=0;
         	contador--;
-        	String [] subdivision = division[1].split("\\."); 
-        	while(j < subdivision[j].length() && Integer.valueOf(subdivision[j]) < 1) {
+        	String subdivision = division[1];
+        	
+        	while(j < subdivision.length() && Character.getNumericValue(subdivision.charAt(j)) < 1) {
         		contador--;
         		j++;
         	}
-        	for(int i=j; i< subdivision[j].length(); i++) {
+        	
+        	for(int i=j; i<subdivision.length(); i++) {
         		if(i==j) {
-        			aux = subdivision[j] + ".";
+        			aux = subdivision.charAt(i) + ".";
         		}
-        		aux = aux + subdivision[j];
+        		else {
+        			aux = aux + subdivision.charAt(i);	
+        		}
         	}
-        		
-        		
+        	return aux + "f" + contador;
         }
-        	 
-        System.out.println("EXC: " + aux + "f" + contador);
-        
-		//System.out.println("KKK: " +  division[0].charAt(0) + "." + aux + division[1] + "f+" + String.valueOf(contador));
-		return "";
 	}
 	
 	public static boolean estaEnRango(String s) {
