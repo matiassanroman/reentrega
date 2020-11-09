@@ -1,0 +1,5 @@
+/*  Resultados de la compilacion  */
+
+/*  Tabla de Simbolos  */
+
+Clave: hola -kkkjj	 Value: hola -kkkjj
