@@ -2,4 +2,3 @@
 
 /*  Tabla de Simbolos  */
 
-Clave: id_integer	 Value: id_integer

@@ -1,2 +1,1 @@
-INTEGER id_integer;
-id_integer = 10_;
+OUT("hola);
