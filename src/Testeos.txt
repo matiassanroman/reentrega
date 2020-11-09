@@ -1,2 +1,12 @@
-INTEGER id_integer;
-id_integer = 10_;
+%% casos correctos bien detectados
+
+%%OUT ("hola");
+
+%% casos incorrectos bien detectados
+
+%%OUTT ("holAa");
+%%OU ("holAa");
+%%OUT(hola");
+
+OUT ("hola -
+kkkjj");
