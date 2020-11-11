@@ -38,7 +38,7 @@ public class AS9_Verificar_Rango_Constante extends AccionSemantica{
 			}
 		}
 		else {
-			System.out.println("Error: constante entera mal escrita, en linea nro: " + compilador.Compilador.nroLinea);
+			System.out.println("Error en la linea "+compilador.Compilador.nroLinea+": CTE ENTERA mal escrita");
 			buffer.delete(0, buffer.length());
 			return 0;
 		}

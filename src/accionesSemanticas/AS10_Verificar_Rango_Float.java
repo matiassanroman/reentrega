@@ -59,7 +59,7 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 			}
 
 		} catch (Exception e) {
-			System.out.println("Error: constante flotante mal escrita, en linea nro: " + compilador.Compilador.nroLinea);
+			System.out.println("Error en la linea "+compilador.Compilador.nroLinea+": CTE FLOTANTE mal escrita");
 			buffer.delete(0, buffer.length());
 			return 0;
 		}

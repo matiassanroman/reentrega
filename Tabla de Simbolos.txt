@@ -3,7 +3,4 @@
 /*  Tabla de Simbolos  */
 
 Clave: b	 Value: b
-Clave: x	 Value: x
 Clave: a	 Value: a
-Clave: 2.0	 Value: 2.0
-Clave: c	 Value: c
