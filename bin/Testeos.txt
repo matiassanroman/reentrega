@@ -1,13 +1,5 @@
-%% casos correctos bien detectados
 
-%%OUT ("hola");
 
-%% casos incorrectos bien detectados
-
-%%OUTT ("holAa");
-%%OU ("holAa");
-%%OUT(hola");
-
-OUT ("hola -
-kkkjj");
-
+%%a = 2.0f+-10;
+a = 2.0x;
+b = c;

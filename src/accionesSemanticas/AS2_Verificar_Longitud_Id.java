@@ -31,7 +31,6 @@ public class AS2_Verificar_Longitud_Id extends AccionSemantica{
 		if(!tablaSimbolo.contains(s)) {
 			tablaSimbolo.put(s.getValor(),s);
 		}
-		
 		return tablaToken.get("ID");
 		
 	}

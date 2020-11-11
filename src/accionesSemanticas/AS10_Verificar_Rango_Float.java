@@ -26,29 +26,46 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 	}
 
 	public int execute(StringBuffer buffer, char c) {
-		String numero = buffer.toString();
-		double flotante;
-		Simbolo s;
-		if (numero.contains("f")) {
-			flotante = Double.parseDouble(numero.replace('f', 'E'));
-			if(String.valueOf(flotante).contains("E"))
-				s = new Simbolo(String.valueOf(flotante).replace('E', 'f'));
-			else
-				s = new Simbolo(String.valueOf(normalizar(flotante)));
-		}
-		else {
-			flotante = Double.parseDouble(numero);
-			s = new Simbolo(String.valueOf(normalizar(flotante)));
+		try {
+			if( (buffer.toString().contains(".")) || (buffer.toString().contains("f")) ){
+				System.out.println("ENTROOOOOOOOOOOOOOOOO: " + buffer.toString());
+				String numero = buffer.toString();
+				double flotante;
+				Simbolo s;
+				if (numero.contains("f")) {
+					flotante = Double.parseDouble(numero.replace('f', 'E'));
+					if(String.valueOf(flotante).contains("E"))
+						s = new Simbolo(String.valueOf(flotante).replace('E', 'f'));
+					else
+						s = new Simbolo(String.valueOf(normalizar(flotante)));
+				}
+				else {
+					flotante = Double.parseDouble(numero);
+					s = new Simbolo(String.valueOf(normalizar(flotante)));
+				}
+				
+				s.setTipo("float");
+				// Si la cte ya está en la TS, retornar reference
+				if(TablaSimbolo.contains(s) )  return TablaToken.get("CTE");
+				else {
+					TablaSimbolo.put(s.getValor(),s);
+					return TablaToken.get("CTE");
+				}
+			}
+			else {
+				System.out.println("Error: constante flotante mal escrita, en linea nro: " + compilador.Compilador.nroLinea);
+				buffer.delete(0, buffer.length());
+				return 0;
+			}
+
+		} catch (Exception e) {
+			System.out.println("Error: constante flotante mal escrita, en linea nro: " + compilador.Compilador.nroLinea);
+			buffer.delete(0, buffer.length());
+			return 0;
 		}
 		
-		s.setTipo("float");
-		// Si la cte ya está en la TS, retornar reference
-		if(TablaSimbolo.contains(s) )  return TablaToken.get("CTE");
-		else {
-			TablaSimbolo.put(s.getValor(),s);
-			return TablaToken.get("CTE");
-		}
-	}
+		
+			}
 
 	public static String normalizar(Double numero) {
 		int contador = 0;

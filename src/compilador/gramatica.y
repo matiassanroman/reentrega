@@ -384,9 +384,9 @@ ctePositiva : CTE
 	mostrarMensaje("Token: CTE, en linea " + compilador.Compilador.nroLinea);
 	comprobarRango($1.sval,false);
 }
-			| error 
+			//| error 
 {
-	yyerror("Error: constante positiva mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);
+	//yyerror("Error: constante positiva mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);
 }
 			;
 
@@ -395,9 +395,9 @@ cteNegativa : '-' CTE
 	mostrarMensaje("Token: CTE, en linea " + compilador.Compilador.nroLinea);
 	comprobarRango($2.sval,true);
 }         
-			| '-' error
+			//| '-' error
 {
-	yyerror("Error: constante negativa mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);	
+	//yyerror("Error: constante negativa mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);	
 }
 		  ;
 
