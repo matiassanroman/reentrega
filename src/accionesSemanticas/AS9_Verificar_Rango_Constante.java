@@ -35,9 +35,9 @@ public class AS9_Verificar_Rango_Constante extends AccionSemantica{
 				list.add(s);
 				tablaSimbolo.put(s.getValor(),list);
 			}
-			//else {
-			//	tablaSimbolo.get(s.getValor()).add(s);
-			//}
+			else {
+				tablaSimbolo.get(s.getValor()).add(s);
+			}
 			
 			return tablaToken.get("CTE");
 		}
