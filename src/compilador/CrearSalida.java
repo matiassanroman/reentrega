@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -21,36 +22,52 @@ public class CrearSalida {
 			salida.newLine();
 			
 			
-			Hashtable<String,Simbolo> tablaSimbolo = c.getTablaSimbolo();
+			Hashtable<String,ArrayList<Simbolo>> tablaSimbolo = c.getTablaSimbolo();
 			salida.write("/*  Tabla de Simbolos  */");
 			salida.newLine();
 			salida.newLine();
-		
-			/*
-			Simbolo s1 = new Simbolo("ariel".toString());
-			s1.setUso("ID");
-			Simbolo s2 = new Simbolo("matias".toString());	
-			s2.setUso("CADENA");
-			
-			tablaSimbolo.put(s1.getValor(),s1);
-			tablaSimbolo.put(s2.getValor(),s2);
-			*/
-			
+					
 			Set<String> keys = tablaSimbolo.keySet();
 		    Iterator<String> itr = keys.iterator();
-		    String str;
-		    
+		    String str; 
+
 		    while (itr.hasNext()) { 
 		       str = itr.next();
-		       salida.write("Clave: " + str + "\t Value: " + str);
-		       salida.newLine();
-		    }
+		       ArrayList<Simbolo> aux =  eliminarRepetidos(tablaSimbolo.get(str));
+	    	   for(int i=0; i<aux.size(); i++) {
+	    			   salida.write("Clave: " + aux.get(i).getValor() + "\t Value: " + aux.get(i).getValor());
+	    			   salida.newLine();
+	    	   }
+			}
 		    
 			salida.close();
 		} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
+	}
+	
+	public static ArrayList<Simbolo> eliminarRepetidos(ArrayList<Simbolo> l){
+		ArrayList<Simbolo> aux = new ArrayList<Simbolo>();
+	    boolean p = true;
+	    
+	    for(int i=0; i<l.size(); i++) {
+	    	if(p) {
+	    		p = false;
+	    		aux.add(l.get(i));
+	    	}
+	    	else {
+	    		boolean r = true;
+	    		for(int j=0; j<aux.size(); j++) {
+	    			if(aux.get(j).getValor().equals(l.get(i).getValor()))
+	    				r = false;
+	    		}
+	    		if(r) {
+	    			aux.add(l.get(i));
+	    		}
+	    	}
+	    }
+	    return aux;
 	}
 	
 }

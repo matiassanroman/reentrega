@@ -422,15 +422,26 @@ void comprobarRango(String sval, boolean negativo){
 			flotante = Double.parseDouble(sval.replace('f', 'E'));
 			String aux = "-" + sval;
 			if ( AS10_Verificar_Rango_Float.estaEnRango(aux) ) {			
-				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				//compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				String auxx = AS10_Verificar_Rango_Float.normalizar(flotante);
+				
+				compilador.Compilador.tablaSimbolo.get(auxx).get(compilador.Compilador.tablaSimbolo.get(auxx).size()-1).setValor("-"+auxx);
+				compilador.Compilador.tablaSimbolo.get(auxx).get(compilador.Compilador.tablaSimbolo.get(auxx).size()-1).setTipo("float");
+				
+				//compilador.Compilador.tablaSimbolo.get(auxx).remove(compilador.Compilador.tablaSimbolo.get(auxx).size()-1);
+				/*
 				Simbolo s = new Simbolo(AS10_Verificar_Rango_Float.normalizar(flotante));
 				s.setValor("-"+s.getValor());
 				s.setTipo("float");
-				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				s.setUso("CTE");
+				*/
+				//compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				//compilador.Compilador.tablaSimbolo.get(auxx).add(s);
 				mostrarMensaje("CTE FLOAT negativa esta dentro del rango");
 			}
 			else {
-				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				//compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				compilador.Compilador.tablaSimbolo.get(AS10_Verificar_Rango_Float.normalizar(flotante)).remove(compilador.Compilador.tablaSimbolo.get(AS10_Verificar_Rango_Float.normalizar(flotante)).size()-1);
 				mostrarMensaje("CTE FLOAT negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
 			}
 		}
@@ -438,15 +449,20 @@ void comprobarRango(String sval, boolean negativo){
 		else{
 			String aux = "-" + sval;
 			if ( AS9_Verificar_Rango_Constante.estaEnRango(aux) ) {			
-				compilador.Compilador.tablaSimbolo.remove(sval);
-				Simbolo s = new Simbolo(sval);
-				s.setValor("-"+s.getValor());
-				s.setTipo("int");
-				compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				//compilador.Compilador.tablaSimbolo.remove(sval);
+				sval = sval.toString().substring(0, sval.length()-2);
+				
+				compilador.Compilador.tablaSimbolo.get(sval).get(compilador.Compilador.tablaSimbolo.get(sval).size()-1).setValor("-"+sval);
+				compilador.Compilador.tablaSimbolo.get(sval).get(compilador.Compilador.tablaSimbolo.get(sval).size()-1).setTipo("int");
+				
+				//compilador.Compilador.tablaSimbolo.put(s.getValor(),s);
+				//compilador.Compilador.tablaSimbolo.get(sval).add(s);
 				mostrarMensaje("CTE ENTERA negativa esta dentro del rango");
 			}
 			else {
-				compilador.Compilador.tablaSimbolo.remove(sval);
+				//compilador.Compilador.tablaSimbolo.remove(sval);
+				sval = sval.toString().substring(0, sval.length()-2);
+				compilador.Compilador.tablaSimbolo.get(sval).remove(compilador.Compilador.tablaSimbolo.get(sval).size()-1);
 				mostrarMensaje("CTE ENTERA negativa esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
 			}
 		}
@@ -458,7 +474,8 @@ void comprobarRango(String sval, boolean negativo){
 			if ( AS10_Verificar_Rango_Float.estaEnRango(sval) )
 			mostrarMensaje("CTE FLOAT postiva esta dentro del rango");
 			else {
-				compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				//compilador.Compilador.tablaSimbolo.remove(AS10_Verificar_Rango_Float.normalizar(flotante));
+				compilador.Compilador.tablaSimbolo.get(AS10_Verificar_Rango_Float.normalizar(flotante)).remove(compilador.Compilador.tablaSimbolo.get(AS10_Verificar_Rango_Float.normalizar(flotante)).size()-1);
 				mostrarMensaje("CTE FLOAT positiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
 			}
 		}
@@ -467,7 +484,9 @@ void comprobarRango(String sval, boolean negativo){
 			if ( AS9_Verificar_Rango_Constante.estaEnRango(sval) )
 			mostrarMensaje("CTE ENTERA postiva esta dentro del rango");
 			else {
-				compilador.Compilador.tablaSimbolo.remove(sval);
+				//compilador.Compilador.tablaSimbolo.remove(sval);
+				sval = sval.toString().substring(0, sval.length()-2);
+				compilador.Compilador.tablaSimbolo.get(sval).remove(compilador.Compilador.tablaSimbolo.get(sval).size()-1);
 				mostrarMensaje("CTE ENTERA postiva esta fuera del rango por lo tanto no aparece en la tabla de simbolos.");
 			}
 		}

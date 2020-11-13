@@ -22,7 +22,7 @@ public class Compilador {
 	protected static int asciiAnterior = 0;
 	
 	//No ponemos privado para evitar mas metodos y que se pueda acceder de cualquier lado. 
-	static Hashtable<String,Simbolo> tablaSimbolo = new Hashtable<String,Simbolo>();
+	static Hashtable<String,ArrayList<Simbolo>> tablaSimbolo = new Hashtable<String,ArrayList<Simbolo>>();
 	static HashMap<String, Integer> tablaToken = new HashMap<String,Integer>();
 
 	//Acciones Semanticas
@@ -97,7 +97,7 @@ public class Compilador {
 	}
 	
 	// Metodo que retorna la tabla de simbolos
-	public Hashtable<String,Simbolo> getTablaSimbolo(){
+	public Hashtable<String,ArrayList<Simbolo>> getTablaSimbolo(){
 		return Compilador.tablaSimbolo;
 	}
 	

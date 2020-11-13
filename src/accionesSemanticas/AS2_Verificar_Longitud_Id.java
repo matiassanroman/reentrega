@@ -1,16 +1,18 @@
 package accionesSemanticas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import compilador.Simbolo;
+import compilador.Compilador;;
 
 public class AS2_Verificar_Longitud_Id extends AccionSemantica{
 
-	Hashtable<String,Simbolo> tablaSimbolo;
+	Hashtable<String,ArrayList<Simbolo>> tablaSimbolo;
 	HashMap<String,Integer> tablaToken; 
 	Simbolo s;		
 	
-	public AS2_Verificar_Longitud_Id(Hashtable<String,Simbolo> tablaSimbolo, HashMap<String,Integer> tablaToken){
+	public AS2_Verificar_Longitud_Id(Hashtable<String,ArrayList<Simbolo>> tablaSimbolo, HashMap<String,Integer> tablaToken){
 		this.tablaToken = tablaToken;
 		this.tablaSimbolo = tablaSimbolo;			
 	}	
@@ -19,19 +21,26 @@ public class AS2_Verificar_Longitud_Id extends AccionSemantica{
 	// igual a 20 caracteres
 	public int execute(StringBuffer buffer, char c) {
 		// Bloques para controlar la longitud de la cadena
-		if (buffer.length() <= 20)
+		if (buffer.length() <= 20) {
 			s = new Simbolo(buffer.toString());
+		}
 		else {
 			s = new Simbolo(buffer.substring(0,20));
 			buffer.setLength(20);
-			tablaSimbolo.put(s.getValor(),s);
+			//tablaSimbolo.put(s.getValor(),s);
 			System.out.println("Warning: Longitud de identificador excedido, truncado a 20");
 		}
 		
-		if(!tablaSimbolo.contains(s)) {
-			tablaSimbolo.put(s.getValor(),s);
+		if(!tablaSimbolo.containsKey(s.getValor()) ) {
+			ArrayList<Simbolo> list =new ArrayList<Simbolo>();
+			list.add(s);
+			tablaSimbolo.put(s.getValor(),list);
+		}else {
+			tablaSimbolo.get(s.getValor()).add(s);	
 		}
+		
 		return tablaToken.get("ID");
+		
 	}
 
 	public Simbolo getSimbolo() {

@@ -19,7 +19,6 @@ public class AS4_Fin_Comentario extends AccionSemantica{
 			buffer.delete(0, buffer.length());
 			return 0;
 		}
-		
 	}
 
 	// Como el comentario de descarta, no es necesario 

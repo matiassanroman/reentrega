@@ -1,5 +1,6 @@
 package accionesSemanticas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -7,8 +8,8 @@ import compilador.Simbolo;
 
 public class AS10_Verificar_Rango_Float extends AccionSemantica{
 
-	Hashtable<String,Simbolo> TablaSimbolo;
-	HashMap<String,Integer> TablaToken;  
+	Hashtable<String,ArrayList<Simbolo>> tablaSimbolo;
+	HashMap<String,Integer> tablaToken; 
 	Simbolo s;
 
 	// Se definen los rangos de las variables
@@ -20,22 +21,22 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 	static double cero = 0.0;
 	
 	// Contructor
-	public AS10_Verificar_Rango_Float(Hashtable<String, Simbolo> tablaSimbolo, HashMap<String, Integer> tablaToken) {
-		TablaSimbolo = tablaSimbolo;
-		TablaToken = tablaToken;
+	public AS10_Verificar_Rango_Float(Hashtable<String, ArrayList<Simbolo>> tablaSimbolo, HashMap<String, Integer> tablaToken) {
+		this.tablaSimbolo = tablaSimbolo;
+		this.tablaToken = tablaToken;
 	}
 
+	
 	public int execute(StringBuffer buffer, char c) {
 		try {
 			if( (buffer.toString().contains(".")) || (buffer.toString().contains("f")) ){
-				System.out.println("ENTROOOOOOOOOOOOOOOOO: " + buffer.toString());
 				String numero = buffer.toString();
 				double flotante;
 				Simbolo s;
 				if (numero.contains("f")) {
 					flotante = Double.parseDouble(numero.replace('f', 'E'));
 					if(String.valueOf(flotante).contains("E"))
-						s = new Simbolo(String.valueOf(flotante).replace('E', 'f'));
+						s = new Simbolo(String.valueOf(flotante).replace('f', 'E'));
 					else
 						s = new Simbolo(String.valueOf(normalizar(flotante)));
 				}
@@ -45,12 +46,17 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 				}
 				
 				s.setTipo("float");
-				// Si la cte ya está en la TS, retornar reference
-				if(TablaSimbolo.contains(s) )  return TablaToken.get("CTE");
-				else {
-					TablaSimbolo.put(s.getValor(),s);
-					return TablaToken.get("CTE");
+				
+				if(!tablaSimbolo.containsKey(s.getValor()) ) {
+					ArrayList<Simbolo> list =new ArrayList<Simbolo>();
+					list.add(s);
+					tablaSimbolo.put(s.getValor(),list);
 				}
+				else {
+					tablaSimbolo.get(s.getValor()).add(s);
+				}
+				
+				return tablaToken.get("CTE"); 
 			}
 			else {
 				System.out.println("Error: constante flotante mal escrita, en linea nro: " + compilador.Compilador.nroLinea);
@@ -63,14 +69,12 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 			buffer.delete(0, buffer.length());
 			return 0;
 		}
-		
-		
-			}
+			
+	}
 
 	public static String normalizar(Double numero) {
 		int contador = 0;
 		String aux = "";
-		String union = "";
         String [] division = numero.toString().split("\\."); 
         
         //Caso de 0.0
@@ -78,7 +82,7 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
         	return String.valueOf(numero);
         //Caso de 1.051
         if(Integer.valueOf(division[0]) >= 1 && Integer.valueOf(division[0]) <= 9) {
-		    return String.valueOf(numero).replace('E', 'f');
+		    return String.valueOf(numero).replace('f', 'E');
         }
         // Caso de 100.001
         else if(Integer.valueOf(division[0]) > 9) {
@@ -86,7 +90,7 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 		         aux = aux + String.valueOf(division[0].charAt(i));
 		         contador++;
 		     } 
-        	 return String.valueOf(division[0].charAt(0)) + "." + aux + "f+" + contador;  
+        	 return String.valueOf(division[0].charAt(0)) + "." + aux + "E+" + contador;  
         }
         //Caso de 0.0001050
         else {
@@ -107,7 +111,7 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
         			aux = aux + subdivision.charAt(i);	
         		}
         	}
-        	return aux + "f" + contador;
+        	return aux + "E" + contador;
         }
 	}
 	
@@ -123,6 +127,7 @@ public class AS10_Verificar_Rango_Float extends AccionSemantica{
 		else  // SI esta fuera de los rangos retornar error
 			return false;	
 	}
+
 	
 	@Override
 	public boolean acomodarLinea() {

@@ -1,5 +1,6 @@
 package accionesSemanticas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 
@@ -7,8 +8,8 @@ import compilador.Simbolo;
 
 public class AS9_Verificar_Rango_Constante extends AccionSemantica{
 	
-	Hashtable<String,Simbolo> TablaSimbolo;
-	HashMap<String,Integer> TablaToken;  
+	Hashtable<String,ArrayList<Simbolo>> tablaSimbolo;
+	HashMap<String,Integer> tablaToken;  
 	Simbolo s;
 
 	// se definen rango mminimo y maximo conrrespondientes
@@ -17,9 +18,9 @@ public class AS9_Verificar_Rango_Constante extends AccionSemantica{
 	static int maxValorCte     =  32767;
 	
 	// Constructor
-	public AS9_Verificar_Rango_Constante(Hashtable<String,Simbolo> TablaSimbolo, HashMap<String,Integer> TablaToken){
-		this.TablaToken = TablaToken;
-		this.TablaSimbolo = TablaSimbolo;			
+	public AS9_Verificar_Rango_Constante(Hashtable<String,ArrayList<Simbolo>> tablaSimbolo, HashMap<String,Integer> tablaToken){
+		this.tablaToken = tablaToken;
+		this.tablaSimbolo = tablaSimbolo;			
 	}
 	
 	
@@ -27,15 +28,18 @@ public class AS9_Verificar_Rango_Constante extends AccionSemantica{
 		if(buffer.toString().contains("_") && buffer.toString().contains("i")) {
 			this.s = new Simbolo(buffer.toString().substring(0, buffer.toString().length()-2)); 
 			s.setTipo("int");
-			System.out.println("ENTROO: " + s.getValor());
-			// Si la cte ya está en la TS, retornar referencia
-			if(TablaSimbolo.contains(this.s) )
-				return TablaToken.get("CTE");
-			// Si la cte no está en la TS, agregarla y retornarla
-			else{                                			
-				TablaSimbolo.put(s.getValor(),s);
-				return TablaToken.get("CTE");
+			
+			// Si la cte no esta la agrego y sino retorno  referencia
+			if(!tablaSimbolo.containsKey(s.getValor()) ) {
+				ArrayList<Simbolo> list =new ArrayList<Simbolo>();
+				list.add(s);
+				tablaSimbolo.put(s.getValor(),list);
 			}
+			//else {
+			//	tablaSimbolo.get(s.getValor()).add(s);
+			//}
+			
+			return tablaToken.get("CTE");
 		}
 		else {
 			System.out.println("Error en la linea "+compilador.Compilador.nroLinea+": CTE ENTERA mal escrita");
