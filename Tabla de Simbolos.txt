@@ -2,9 +2,6 @@
 
 /*  Tabla de Simbolos  */
 
-Clave: 32766	 Value: 32766
 Clave: a	 Value: a
-Clave: 2	 Value: 2
-Clave: -32768	 Value: -32768
-Clave: -32767	 Value: -32767
-Clave: 32767	 Value: 32767
+Clave: 9	 Value: 9
+Clave: 2.02E31	 Value: 2.02E31
