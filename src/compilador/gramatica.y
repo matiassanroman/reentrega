@@ -292,6 +292,10 @@ asignacion : identificador '=' expresion
 {
 	yyerror("Error: identificador mal escrito, en linea nro: "+ compilador.Compilador.nroLinea);
 }
+		   | identificador '=' error
+{
+	yyerror("Error: asignacion mal escrita, en linea nro: "+ compilador.Compilador.nroLinea);
+}
 		   ;
 
 expresion : expresion '+' termino
