@@ -469,7 +469,6 @@ void mostrarMensaje(String mensaje){
 
 void comprobarRango(String sval, boolean negativo){
 	double flotante;
-	int entero;
 
 	//ES NEGATIVO???
 	if(negativo) {	
@@ -686,7 +685,7 @@ boolean doaction;
       {
       if (yyerrflag==0)
         {
-        yyerror("syntax error");
+        //yyerror("syntax error");
         yynerrs++;
         }
       if (yyerrflag < 3) //low error count?

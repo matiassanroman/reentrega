@@ -1,0 +1,9 @@
+/*  Resultados de la compilacion  */
+
+/*  Tabla de Simbolos  */
+
+Clave: a	 Value: a
+Clave: 3.40282346E38	 Value: 3.40282346E38
+Clave: -3.40282346E38	 Value: -3.40282346E38
+Clave: 1.17549436E-38	 Value: 1.17549436E-38
+Clave: -1.17549436E-38	 Value: -1.17549436E-38
