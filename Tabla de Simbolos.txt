@@ -2,6 +2,6 @@
 
 /*  Tabla de Simbolos  */
 
-Clave: a	 Value: a
-Clave: 9	 Value: 9
-Clave: 2.02E31	 Value: 2.02E31
+Clave: 2.0200E+4	 Value: 2.0200E+4
+Clave: "hola"	 Value: "hola"
+Clave: g	 Value: g
